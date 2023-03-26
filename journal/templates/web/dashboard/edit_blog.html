@@ -97,7 +97,6 @@
     postTitleInput.addEventListener('input', () => {
         const title = postTitleInput.value;
         const postURL = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-
         postURLInput.value = postURL;
     });
 
