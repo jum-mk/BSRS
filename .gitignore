@@ -11,3 +11,13 @@ journal/__pycache__/models.cpython-39.pyc
 sci/__pycache__/__init__.cpython-39.pyc
 sci/__pycache__/settings.cpython-39.pyc
 sci/__pycache__/
+journal/__pycache__/admin.cpython-39.pyc
+journal/__pycache__/api.cpython-39.pyc
+journal/__pycache__/apiurls.cpython-39.pyc
+journal/__pycache__/filters.cpython-39.pyc
+journal/__pycache__/forms.cpython-39.pyc
+journal/__pycache__/serializers.cpython-39.pyc
+journal/__pycache__/urls.cpython-39.pyc
+journal/__pycache__/views.cpython-39.pyc
+journal/migrations/__pycache__/__init__.cpython-39.pyc
+sci/__pycache__/views.cpython-39.pyc
