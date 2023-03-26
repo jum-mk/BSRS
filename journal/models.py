@@ -1,13 +1,37 @@
 from django.db import models
 from django.urls import reverse
 from tinymce.models import HTMLField
+from django.conf import settings
+from django.contrib.auth.models import User
+from django.core.validators import MinValueValidator, MaxValueValidator
+from decimal import Decimal
 
 
 class Sections(models.Model):
     title = models.CharField(max_length=30)
+    title_mk = models.CharField(max_length=30)
+    meta_decription = models.CharField(max_length=30, null=True, blank=True)
+    icon = models.ImageField(upload_to='section/icons', null=True, blank=True)
+    content = models.TextField(blank=True, null=True, db_index=True)
+    slug_field = models.CharField(max_length=150, verbose_name='Slug', unique=True, db_index=True, null=True)
+    image = models.ImageField(upload_to='sections/featured_images', null=True, blank=True)
 
     def __str__(self):
         return self.title
+
+    def get_absolute_url(self):
+        return reverse('single_section', kwargs={
+            'slug_field': self.slug_field
+        })
+
+    def get_image(self):
+        try:
+            if self.image is not None:
+                return self.image.url
+            else:
+                return ''
+        except ValueError:
+            return ''
 
 
 class Issue(models.Model):
@@ -111,15 +135,40 @@ class PostTag(models.Model):
         return self.tag_name
 
 
+class PostCategory(models.Model):
+    name = models.CharField(max_length=20, db_index=True)
+
+    def __str__(self):
+        return self.name
+
+
 class Post(models.Model):
     title = models.CharField(max_length=255, db_index=True)
     content = models.TextField(blank=False, null=False, db_index=True)
     image = models.ImageField(upload_to='post_images', blank=False, db_index=True)
     tag = models.ManyToManyField(PostTag)
     slug = models.SlugField(max_length=50, unique=True, blank=True, db_index=True)
+    meta_description = models.CharField(max_length=255)
+    date_created = models.DateTimeField(auto_now_add=True)
+    section = models.ForeignKey(Sections, on_delete=models.SET_NULL, null=True, blank=True)
+    category = models.ForeignKey(PostCategory, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return self.title
+
+    def get_image(self):
+        try:
+            if self.image is not None:
+                return self.image.url
+            else:
+                return ''
+        except ValueError:
+            return ''
+
+    def get_absolute_url(self):
+        return reverse('single_post', kwargs={
+            'slug': self.slug
+        })
 
 
 class Bug(models.Model):
@@ -157,3 +206,106 @@ class ManuscriptReview(models.Model):
 
     def __str__(self):
         return self.main_author
+
+
+User = User
+
+
+class Finding(models.Model):
+    section = models.ForeignKey(Sections, on_delete=models.SET_NULL, null=True)
+    researcher = models.ForeignKey(User, on_delete=models.CASCADE)
+    latitude = models.DecimalField(max_digits=9, decimal_places=6, default=2)
+    longitude = models.DecimalField(max_digits=9, decimal_places=6, default=2)
+    locality_name = models.CharField(max_length=255)
+    habitat_type = models.CharField(max_length=255)
+    images = models.ImageField(upload_to='findings/')
+    additional_field_1 = models.CharField(max_length=255)
+    additional_field_2 = models.CharField(max_length=255)
+    additional_field_3 = models.CharField(max_length=255)
+    additional_field_4 = models.CharField(max_length=255)
+    additional_field_5 = models.CharField(max_length=255)
+
+    def __str__(self):
+        return str(self.researcher)
+
+
+class OrnithologyObservation(models.Model):
+    species = models.CharField(max_length=100)
+    latitude = models.DecimalField(max_digits=9, decimal_places=7,
+                                   validators=[MinValueValidator(Decimal('10.01')),
+                                               MaxValueValidator(Decimal('99999.99'))])
+    longitude = models.DecimalField(max_digits=9, decimal_places=7,
+                                    validators=[MinValueValidator(Decimal('10.01')),
+                                                MaxValueValidator(Decimal('99999.99'))])
+    altitude = models.PositiveIntegerField(null=True, blank=True)
+    date = models.DateField()
+    time = models.TimeField()
+    note = models.TextField(blank=True, null=True)
+    min_no = models.IntegerField(blank=True, null=True)
+    max_no = models.IntegerField(blank=True, null=True)
+    sociality = models.CharField(max_length=100, blank=True, null=True)
+    age = models.CharField(max_length=100, blank=True, null=True)
+    sex = models.CharField(max_length=100, blank=True, null=True)
+    voice = models.CharField(max_length=100, blank=True, null=True)
+    breeding_code = models.CharField(max_length=100, blank=True, null=True)
+    habitats = models.CharField(max_length=100)
+    locality = models.CharField(max_length=100)
+    region = models.CharField(max_length=100)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    is_confirmed = models.BooleanField(default=False)
+
+    image = models.ImageField(upload_to='ornithology/observation_images', null=True, blank=True)
+
+    def __str__(self):
+        return self.species
+
+
+# BLOG APP
+
+
+class BlogImage(models.Model):
+    name = models.CharField(max_length=512, null=True, blank=True)
+    image = models.ImageField(upload_to='blog/images/', null=True, blank=True)
+
+    def __str__(self):
+        return self.name
+
+
+class BlogCategory(models.Model):
+    name = models.CharField(max_length=512, null=True, blank=True)
+
+    def __str__(self):
+        return self.name
+
+
+class BlogPost(models.Model):
+    title = models.CharField(max_length=512)
+    meta_description = models.CharField(max_length=512, null=True, blank=True)
+    featured_image = models.ImageField(upload_to='blog/featured_images/', null=True, blank=True)
+    slug = models.CharField(max_length=255)
+    content = models.TextField()
+    category = models.ForeignKey(BlogCategory, on_delete=models.SET_NULL, null=True, blank=True)
+    is_draft = models.BooleanField(default=True)
+    date_created = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+
+    def __str__(self):
+        return self.title
+
+    def get_absolute_url(self):
+        return reverse('single_blog_view', kwargs={
+            'slug': self.slug
+        })
+
+    def get_edit_absolute_url(self):
+        return reverse('edit_single_blog_view', kwargs={
+            'id': self.id
+        })
+
+    def get_image(self):
+        try:
+            if self.featured_image is not None:
+                return self.featured_image.url
+            else:
+                return ''
+        except ValueError:
+            return ''

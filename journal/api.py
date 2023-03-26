@@ -3,6 +3,21 @@ from .models import Author, Manuscript, Volume, Sections
 from .serializers import ManuscriptSerializer, AuthorSerializer, VolumeSerializer, SectionsSerializer
 from django.db.models import Count
 
+from rest_framework import generics
+from .models import Finding
+from .serializers import FindingSerializer
+
+
+class FindingList(generics.ListCreateAPIView):
+    queryset = Finding.objects.all()
+    serializer_class = FindingSerializer
+    print()
+
+
+class FindingDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Finding.objects.all()
+    serializer_class = FindingSerializer
+
 
 class ManuscriptViewSet(viewsets.ModelViewSet):
     queryset = Manuscript.objects.all()

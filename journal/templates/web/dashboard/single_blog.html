@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en-US" dir="ltr">
+
+<head>
+    <title>{{ post.title }} | TCM</title>
+    {% include 'head.html' %}
+    <meta content="{{ post.meta_description }}" name="description">
+
+    <meta property="og:site_name" content="https://www.tcm-acupuncture.com"/>
+    <meta property="og:title" content="{{ post.title }}"/>
+    <meta property="og:url" content="https://tcm-acupuncture.mk{{ post.get_absolute_url }}"/>
+    <meta property="og:description" content="{{ post.meta_description }}"/>
+    <meta property="og:image" content="{{ post.featured_image.url }}"/>
+    <meta property="og:type" content="website"/>
+
+    <style>
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .image-title-container {
+            height: 400px;
+            margin-top: 50px;
+        }
+
+        @media only screen and (max-width: 767px) {
+            .contact-author {
+                width: 100%;
+            }
+
+            .image-title-container {
+                height: 200px;
+            }
+        }
+    </style>
+</head>
+
+
+<body>
+{% include 'menu.html' %}
+
+<!-- ===============================================-->
+<!--    Main Content-->
+<!-- ===============================================-->
+
+
+<div class="container-small shadow-sm image-title-container mt-0 mt-lg-4 align-items-center justify-content-center d-flex"
+     style="border-radius: 5px 5px 5px 5px ;
+             background-image: url( {{ post.featured_image.url }} );
+             background-position: center;
+             background-size: cover;
+             filter: brightness(90%);
+             width:100%;
+             color:whitesmoke;">
+    <h1 class="mb-4 " style="color: white; filter: brightness(100%);">{{ post.title }}</h1>
+</div>
+
+<div class="container-small d-flex justify-content-end mt-3 mb-0">
+    <button class="btn btn-sm btn-phoenix-danger" id="shareButton" value="{{ post.get_absolute_url }}">
+        <i class="fa fa-share-square me-2"></i>Share
+    </button>
+</div>
+
+<div class="container-small p-1 ">
+    <div class="p-1 pe-lg-4 d-flex flex-column mb-15">
+
+        {{ post.content|safe }}
+    </div>
+</div>
+
+{% include 'en/footer.html' %}
+
+
+{% include 'body-scripts.html' %}
+<script>
+    const shareButton = document.getElementById('shareButton')
+    const post_url = `{{ post.get_absolute_url }}`
+    shareButton.addEventListener('click', event => {
+        event.preventDefault();
+        console.log(event)
+        if (navigator.share) {
+            navigator.share({
+                title: `{{ post.title }}`,
+                url: `{{ post.get_absolute_url }}`
+            }).then(() => {
+                console.log('Thanks for sharing!');
+            })
+                .catch(console.error);
+        } else {
+            shareButton.innerText = 'Link copied'
+            shareButton.setAttribute('disabled', 'disabled')
+            navigator.clipboard.writeText(location.href)
+            console.log('else')
+        }
+    });
+</script>
+</body>
+
+</html>

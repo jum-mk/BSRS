@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    {% include 'head.html' %}
+    <meta name="generator" content="Jum Scientific Journal v1.0.1">
+    <title>{{ abstract.citation_title }}</title>
+    <meta name="description" content="{{ abstract.citation_title }}">
+    <meta charset="UTF-8">
+    <meta name=”robots” content="index, follow">
+
+    <style>
+        label {
+            font-size: 13px;
+            font-weight: 500;
+            margin-left: 5px;
+        }
+
+        @media only screen and (max-width: 767px) {
+            .contact-author {
+                width: 100%;
+            }
+        }
+
+    </style>
+
+</head>
+<body style="padding: 0 10px;">
+{% include 'web/menu.html' %}
+
+<div class="container shadow-sm p-3 mb-2 mt-4 bg-white mb-4" style="border-radius: 10px; max-width: 500px;">
+    <form method="post" class="d-flex justify-content-center flex-column">
+        {% csrf_token %}
+        <button class="m-3 btn-lg btn-light border p-2" type="button" id="get-coordinates-button">Get coordinates and
+            altitude
+        </button>
+        {{ form.as_p }}
+        <button type="submit" class="btn-lg btn btn-success">Save observation</button>
+    </form>
+
+</div>
+{% include 'web/footer.html' %}
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB2O30U8AtrLV81ZCgnntbVrj-dmzmtJnk"></script>
+
+<script>
+    const setDefaultDateTime = () => {
+        const now = new Date();
+        const dateString = now.toISOString().substr(0, 10);
+        const timeString = now.toTimeString().substr(0, 5);
+        document.getElementById("id_date").value = dateString;
+        document.getElementById("id_time").value = timeString;
+    }
+    setDefaultDateTime();
+    const getCoordinatesButton = document.getElementById('get-coordinates-button');
+    const latitudeField = document.getElementById('id_latitude');
+    const longitudeField = document.getElementById('id_longitude');
+    const altitudeField = document.getElementById('id_altitude');
+
+    getCoordinatesButton.addEventListener('click', (event) => {
+
+        event.preventDefault();
+        const spinner = `<div style="width:30px; height:30px;" class="spinner-border text-primary" role="status">
+                                    </div>`
+        getCoordinatesButton.innerHTML = spinner
+        if ('geolocation' in navigator) {
+            navigator.geolocation.getCurrentPosition(
+                position => {
+
+                    const latitude = position.coords.latitude;
+                    const longitude = position.coords.longitude;
+                    console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
+
+                    latitudeField.value = latitude;
+                    longitudeField.value = longitude;
+
+                    // Use Google Maps API's elevation service to get the altitude
+                    const elevator = new google.maps.ElevationService();
+                    const location = new google.maps.LatLng(latitude, longitude);
+
+                    elevator.getElevationForLocations({locations: [location]}, results => {
+                        if (results[0]) {
+                            altitudeField.value = Math.floor(results[0].elevation);
+                            getCoordinatesButton.innerHTML = 'Get coordinates and altitude'
+                        } else {
+                            console.error('No results found');
+                        }
+                    });
+                },
+                error => {
+                    console.error(`Error: ${error.message}`);
+                    // Here, you can handle the error in some way
+                }
+            );
+        } else {
+            console.error('Geolocation is not supported by this browser');
+            // Here, you can handle the case where the browser does not support the Geolocation API
+        }
+    });
+
+</script>
+</body>
+</html>

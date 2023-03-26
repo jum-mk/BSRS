@@ -5,8 +5,6 @@ venv/
 journal/migrations/
 sci/__pycache__
 journal/__pycache__
-
-venv/
 journal/__pycache__/__init__.cpython-39.pyc
 journal/__pycache__/apps.cpython-39.pyc
 journal/__pycache__/models.cpython-39.pyc
@@ -14,4 +12,3 @@ sci/__pycache__/__init__.cpython-39.pyc
 sci/__pycache__/settings.cpython-39.pyc
 sci/__pycache__/
 sci/settings.py
-journal/migrations/

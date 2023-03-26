@@ -1,13 +1,24 @@
-import json
-from django.shortcuts import render, get_object_or_404, redirect
-from .models import Manuscript, Volume, Author, ManuscriptReview
 from django.db.models import Count
-from .forms import BugForm, ContactForm
 from .filters import ManuscriptFilter
-from django.core.mail import send_mail
 from django.http import HttpResponse
+from .forms import *
+import json
+from django.shortcuts import render, redirect, get_object_or_404
+from django.db.models import ObjectDoesNotExist
+from rest_framework.exceptions import status
+from .models import *
+from django.core.mail import send_mail
+from django.utils.crypto import get_random_string
+from .models import BlogImage
+from django.views.decorators.csrf import csrf_exempt
 
-def index(request):
+
+def create_finding(request):
+    user = request.user
+    return render(request, 'create_finding.html', context={'findings': Finding.objects.filter(user=user)})
+
+
+def journal_index(request):
     # This query gives the totals for each degree in a dictionary, then we pass it into the view and loop over it to
     # render the values in Chart.js.
     degree_counts = Author.objects.order_by('degree').values('degree').annotate(Count('id'))
@@ -57,7 +68,7 @@ def index(request):
     mss = Manuscript.objects.all()
     return render(
         request,
-        template_name='index.html',
+        template_name='journal_index.html',
         context={
             'section_count_labels': section_count_labels,
             'section_count_dataset': section_count_dataset,
@@ -70,6 +81,18 @@ def index(request):
             'filter': manuscript_filter,
         }
     )
+
+
+def index(request):
+    blog_posts = BlogPost.objects.all()
+    sections = Sections.objects.all()
+    return render(request, template_name='index.html', context={'posts': blog_posts, 'sections': sections})
+
+
+def single_post(request, slug):
+    post = get_object_or_404(Post, slug=slug)
+    sections = Sections.objects.all()
+    return render(request, 'web/single_post.html', context={'post': post, 'sections': sections})
 
 
 def charts(request):
@@ -202,3 +225,198 @@ def submit(request):
             return HttpResponse('Error saving manuscript review')
 
     return render(request, 'submit.html', context=None)
+
+
+def create_ornithology_observation(request):
+    if request.method == 'POST':
+        form = OrnithologyObservationForm(request.POST)
+        if form.is_valid():
+            observation = form.save(commit=False)
+            observation.user = request.user  # set the user of the observation to request.user
+
+            observation.save()
+            return redirect('my_ornithology_observation_list')
+    else:
+        form = OrnithologyObservationForm()
+    return render(request, 'web/observations/ornithology_observation_form.html', {'form': form})
+
+
+def ornithology_observation_list(request):
+    observations = OrnithologyObservation.objects.all()
+    return render(request, 'web/observations/ornithology_observation_list.html', {'observations': observations})
+
+
+def my_ornithology_observation_list(request):
+    if request.user.is_authenticated:
+        observations = OrnithologyObservation.objects.filter(user=request.user)
+        return render(request, 'web/observations/my_ornithology_observations.html', {'observations': observations})
+
+
+def single_section(request, slug_field):
+    section = get_object_or_404(Sections, slug_field=slug_field)
+    sections = Sections.objects.all()
+
+    return render(request, 'web/single_section.html', context={'section': section, 'sections': sections})
+
+
+def create_blog_view(request):
+    if request.user.is_authenticated and request.user.is_staff:
+        if request.method == 'POST':
+            data = request.POST
+            print(request.FILES)
+            post = BlogPost()
+            post.title = data['postTitle']
+            post.meta_description = data['postMeta']
+            try:
+                BlogPost.objects.get(slug=data['postURL'])
+                post.slug = data['postURL'] + '-' + get_random_string(5)
+            except ObjectDoesNotExist:
+                post.slug = data['postURL']
+            post.category = BlogCategory.objects.get(id=int(data['category']))
+            post.content = data['html_content']
+            post.featured_image = request.FILES['featured_image']
+            print(post.featured_image)
+
+            if post.featured_image is None:
+                print('dead')
+                return JsonResponse(status.HTTP_403_FORBIDDEN)
+            else:
+                post.save()
+
+        cats = BlogCategory.objects.all()
+        return render(request, template_name='web/dashboard/create_blog.html', context={'cats': cats})
+
+
+def single_blog_view(request, slug):
+    post = get_object_or_404(BlogPost, slug=slug)
+    return render(request, 'web/single_post.html', context={
+        'post': post,
+    })
+
+
+def edit_single_blog_view(request, id):
+    if request.user.is_staff:
+        post = get_object_or_404(BlogPost, id=id)
+        cats = BlogCategory.objects.all()
+
+        return render(request, 'web/dashboard/edit_blog.html', context={
+            'post': post,
+            'cats': cats
+        })
+
+
+def edit_post(request):
+    if request.user.staff and request.user.is_authenticated:
+        if request.method == 'POST':
+            data = request.POST
+            post = get_object_or_404(BlogPost, id=int(data['post_id']))
+            post.title = data['postTitle']
+            post.slug = data['postURL']
+            post.content = data['html_content']
+            post.category = BlogCategory.objects.get(id=data['category'])
+            post.meta_description = data['postMeta']
+            if 'featured_image' in request.FILES and request.FILES['featured_image'] != '':
+                post.featured_image = request.FILES['featured_image']
+
+            post.save()
+            return redirect('dashboard-posts')
+
+
+@csrf_exempt
+def tinymce_image_upload(request):
+    if request.user.is_staff:
+        if request.FILES.getlist('file'):
+
+            # Get the uploaded image file
+            image_file = request.FILES.getlist('file')[0]
+            print(image_file)
+
+            # Create a new BlogImage instance and save the uploaded image
+            blog_image = BlogImage(name=str(image_file), image=image_file)
+            blog_image.save()
+
+            # Build the response object
+            response = {
+                'location': blog_image.image.url,
+                'id': blog_image.id
+            }
+
+            print(response)
+
+            # Return a JSON response containing the image location and ID
+            return JsonResponse(response)
+        else:
+            return JsonResponse({'error': 'Invalid request'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+def dashboard_cats(request):
+    if request.user.is_authenticated and request.user.is_staff:
+        if request.method == 'POST' and 'add' in request.POST:
+            cat = BlogCategory()
+            cat.name = request.POST['cat_name']
+            cat.save()
+            cats = BlogCategory.objects.all()
+            return render(request, 'web/dashboard/cats.html', context={'cats': cats})
+        elif request.method == 'POST' and 'delete' in request.POST:
+            BlogCategory.objects.get(id=int(request.POST['cat_id'])).delete()
+            cats = BlogCategory.objects.all()
+            return render(request, 'web/dashboard/cats.html', context={'cats': cats})
+        else:
+            cats = BlogCategory.objects.all()
+            return render(request, 'web/dashboard/cats.html', context={'cats': cats})
+
+
+def dashboard_posts(request):
+    if request.user.is_authenticated and request.user.is_staff:
+        if request.method == 'POST' and 'delete' in request.POST:
+            print(request.POST)
+            BlogPost.objects.get(id=int(request.POST['post_id'])).delete()
+            posts = BlogPost.objects.all()
+            return render(request, 'web/dashboard/blogs.html', context={'posts': posts})
+        else:
+            posts = BlogPost.objects.all()
+            return render(request, 'web/dashboard/blogs.html', context={'posts': posts})
+
+
+import re
+import random
+import string
+
+
+def slugify(title):
+    # remove any non-alphanumeric or non-space characters
+    title = re.sub('[^0-9a-zA-Z\s]+', '', title)
+    # replace any spaces with hyphens
+    title = re.sub('\s+', '-', title)
+    # convert to lowercase
+    title = title.lower()
+    # remove any leading or trailing hyphens
+    title = re.sub('^[-]+|[-]+$', '', title)
+    # add random string
+    random_string = ''.join(random.choices(string.ascii_lowercase + string.digits, k=4))
+    slug = f"{title}-{random_string}"
+    # return the result
+    return slug
+
+
+def parse_posts(request):
+    parse_xml_file()
+    pass
+
+
+def parse_xml_file():
+    with open('/Users/yellowflash/PycharmProjects/sci/journal/wp_posts.json') as f:
+        parsed_list = json.load(f)
+        for item in parsed_list:
+            post = Post.objects.create(title=item['post_title'], content=item['post_content'],
+                                       slug=slugify(item['post_title']))
+            post.save()
+
+
+from django.http import JsonResponse
+
+
+def delete_post(request):
+    data = json.loads(request.body.decode('utf-8'))
+    Post.objects.all().delete()
+    return JsonResponse({'status': 'deleted'})

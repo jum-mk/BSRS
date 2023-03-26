@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en-US" dir="ltr">
+
+<head>
+    <title>Edit post</title>
+    {% include 'head.html' %}
+    <script src="https://cdn.tiny.cloud/1/kijo1ibwovaefiskqjy9yj6uzbqciuf62eovavqow84hz7qa/tinymce/6/tinymce.min.js"
+            referrerpolicy="origin"></script>
+</head>
+<style>
+    label{font-weight: 700;}
+</style>
+
+<body>
+{% include 'menu.html' %}
+
+<div class="container px-0 d-flex align-items-center justify-content-center mt-4 mb-2 shadow-sm"
+     style="border-radius: 12px;">
+    {% include 'web/dashboard/menu.html' %}
+
+</div>
+<div class="col-12">
+    <div class="container my-3 p-4">
+        <h3 class="mb-4">Edit post</h3>
+        <form method="post" action="{% url 'edit_post' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="hidden" value="{{ post.id }}" name="post_id" id="postId">
+            <div class="mb-3">
+                <label for="postTitle" class="form-label">Post Title</label>
+                <input type="text" class="form-control" id="postTitle" name="postTitle" value="{{ post.title }}"
+                       required/>
+            </div>
+            <div class="mb-3">
+                <label for="postURL" class="form-label">URL</label>
+                <input type="text" class="form-control" required name="postURL" id="postURL" maxlength="150"
+                       value="{{ post.slug }}">
+            </div>
+            <div class="mb-3">
+                <label for="postContent" class="form-label">Post Content</label>
+                <textarea class="form-control" id="postContent" rows="30" name="html_content" required
+                          value="">{{ post.content }}</textarea>
+            </div>
+
+            <div class="mb-3">
+                <label for="postCategory" class="label-danger">Post Category</label>
+                <select class="form-control" id="postCategory" name="category" required>
+                    <option value="">Select a category</option>
+                    {% for cat in cats %}
+                        <option value="{{ cat.id }}">{{ cat.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="postMeta" class="form-label">Search Engine Description</label>
+                <input type="text" class="form-control" required name="postMeta" id="postMeta" maxlength="150"
+                       value="{{ post.meta_description }}">
+            </div>
+
+            <div class="mb-3">
+                <label for="postFeaturedImage" class="form-label">Featured Image</label>
+                <div class="d-flex mb-3 mt-2 ms-3" style="max-width: 150px; max-height: 100px;">
+                    <img src="{{ post.featured_image.url }}" width="150" height="100" class="rounded-2 ms-2">
+                </div>
+                <input type="file" id="postFeaturedImage" class="form-control mb-3 shadow-sm" name="featured_image"
+                       value="{{ post.featured_image.url }}">
+            </div>
+
+            <div class="d-flex justify-content-end">
+                <button type="submit" class="btn btn-success border btn-lg mt-3 mb-4" name="publish">Publish
+                </button>
+
+            </div>
+
+        </form>
+    </div>
+</div>
+<!-- ===============================================-->
+<!--    Main Content-->
+<!-- ===============================================-->
+
+
+<script>
+    tinymce.init({
+        selector: 'textarea',
+        plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
+        toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+        images_upload_url: '/tinymce_image_upload/'
+    });
+</script>
+<script>
+    const postTitleInput = document.getElementById('postTitle');
+    const postURLInput = document.getElementById('postURL');
+
+    postTitleInput.addEventListener('input', () => {
+        const title = postTitleInput.value;
+        const postURL = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+
+        postURLInput.value = postURL;
+    });
+
+</script>
+
+</body>
+
+</html>

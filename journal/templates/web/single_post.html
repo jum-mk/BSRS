@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    {% block content %}
+        {% include 'head.html' %}
+        <meta name="generator" content="Jum Scientific Journal v1.0.1">
+        <title>{{ post.title }}</title>
+        <meta name="description" content="{{ post.meta_description }}">
+        <meta charset="UTF-8">
+        <meta name=”robots” content="index, follow">
+        <meta property="og:site_name" content="https://www.idsbiolozi.com"/>
+        <meta property="og:title" content="{{ post.title }}"/>
+        <meta property="og:url" content="https://tcm-acupuncture.mk{{ post.get_absolute_url }}"/>
+        <meta property="og:description" content="{{ post.meta_description }}"/>
+        <meta property="og:image" content="{{ post.get_image }}"/>
+        <meta property="og:type" content="website"/>
+        </head>
+
+        {% include 'web/menu.html' %}
+
+        <div class="container-lg p-0 shadow mt-4 mt-lg-0" style="border-radius: 14px;">
+            <div id='blogHero'
+                 class="ps-2 pe-2 sticky-top shadow-sm image-title-container mt-0 mt-lg-2 align-items-center justify-content-center d-flex p-4"
+                 style="background-image: url( {{ post.get_image }} ); border-radius: 12px;">
+                <div class="d-flex p-4" id="blogTitle">
+                    <h1 align='center' class="m-0 p-0 p-lg-4"
+                        style="color: white; filter: brightness(100%); font-weight: 700; font-size:30px;">
+                        {{ post.title }}</h1>
+
+                </div>
+            </div>
+        </div>
+        <div class="container p-2 my-3 d-flex d-flex justify-content-between align-items-center shadow"
+             style="  border-radius: 12px;">
+            <p class="m-0 mx-2" style="font-size:13px;"><strong>Датум на објава: </strong><br>
+                {{ post.date_created }}
+            </p>
+            <button class="btn btn-success" id="shareButton"
+                    value="{{ post.get_absolute_url }}"
+                    style="font-weight: 700; width: auto; font-size:13px; background: lightseagreen;">
+                <i class="bi bi-share-fill pe-2" style="font-weight: 800;"></i>
+                Сподели
+            </button>
+        </div>
+        <div class="container shadow-sm p-3 mb-2 bg-white shadow" style="border-radius: 12px;">
+            <div class="col-md-auto p-0">
+
+                <p class="m-0">
+                    {{ post.content|safe }}
+                </p>
+
+            </div>
+        </div>
+        <br>
+        <div class="container shadow-sm p-2 mb-0 bg-white" style="border-radius: 10px;">
+            <div class="col-md-auto d-flex align-items-center justify-content-between">
+                <div class="float-sm-right">
+                    <p class="m-0" style="font-size:13px;"><strong>Датум на објава: </strong><br>
+                        {{ post.date_created }}
+                    </p>
+                </div>
+                <div class="col p-0 m-0">
+                    {% for tag in post.tag.all %}
+                        <div class="badge badge-light float-sm-right shadow-sm px-2 border py-2 d-md-block d-none"
+                             style="font-size:11px; font-weight: 300;">
+                            <button class="btn btn-light">{{ tag }}</button>
+                        </div> {% endfor %}
+                </div>
+
+            </div>
+        </div>
+        <br>
+
+        {% include 'web/footer.html' %}
+    {% endblock content %}
+
+    <script>
+        $(function () {
+            $('[data-toggle=" popover"]').popover()
+        })
+    </script>
+    <script>
+        const shareButton = document.getElementById('shareButton')
+        const post_url = `{{ post.get_absolute_url }}`
+        shareButton.addEventListener('click', event => {
+            event.preventDefault();
+            console.log(event)
+            if (navigator.share) {
+                navigator.share({
+                    title: `{{ post.title }}`,
+                    url: `{{ post.get_absolute_url }}`
+                }).then(() => {
+                    console.log('Thanks for sharing!');
+                })
+                    .catch(console.error);
+            } else {
+                shareButton.innerText = 'Линкот е копиран'
+                shareButton.style.fontSize = '11px'
+                shareButton.setAttribute('disabled', 'disabled')
+                navigator.clipboard.writeText(location.href)
+                console.log('else')
+            }
+        });
+    </script>
+    </body>
+</html>

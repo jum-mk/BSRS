@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    {% block content %}
+        {% include 'head.html' %}
+        <meta name="generator" content="Jum Scientific Journal v1.0.1">
+        <title>{{ post.title }}</title>
+        <meta name="description" content="{{ post.meta_description }}">
+        <meta charset="UTF-8">
+        <meta name=”robots” content="index, follow">
+
+        <style>
+            .contact-author {
+            }
+
+            @media only screen and (max-width: 767px) {
+                .contact-author {
+                    width: 100%;
+                }
+            }
+
+        </style>
+        </head>
+        <body style="padding: 0 10px;">
+        {% include 'web/menu.html' %}
+        {% if section.get_image != '' %}
+            <div class="container-lg p-0 shadow mt-4 mt-lg-0" style="border-radius: 14px;">
+
+                <div id='blogHero'
+                     class="ps-2 pe-2 sticky-top shadow-sm image-title-container mt-0 mt-lg-2 align-items-center justify-content-center d-flex p-4"
+                     style="background-image: url( {{ section.get_image }} ); border-radius: 12px;">
+                    <div class="d-flex p-4" id="blogTitle">
+                        <h1 align='center' class="m-0 p-0 p-lg-4"
+                            style="color: white; filter: brightness(100%); font-weight: 700; font-size:30px;">
+                            {{ section.title_mk }} секција</h1>
+
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+        <div class="container shadow-sm p-0  bg-white mt-3 mb-3 shadow" style="border-radius: 10px;">
+            <div class="col-md-auto p-0">
+
+                <div class="p-3">
+                    {{ section.content|safe }}
+
+                </div>
+
+
+            </div>
+        </div>
+
+        {% include 'web/footer.html' %}
+    {% endblock content %}
+
+
+    </body>
+</html>

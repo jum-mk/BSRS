@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Manuscript, Author, Sections, Announcement, PostTag, Post, Volume, Bug, Contact, Issue, ManuscriptReview
+from .models import *
 from tinymce.widgets import TinyMCE
 from django.db import models
 from django.forms import CheckboxSelectMultiple
@@ -26,7 +26,6 @@ class JournalAdmin(admin.ModelAdmin):
     filter_horizontal = ('authors',)
 
 
-
 class PostAdmin(admin.ModelAdmin):
     formfield_overrides = {
         models.TextField: {'widget': TinyMCE()},
@@ -34,7 +33,14 @@ class PostAdmin(admin.ModelAdmin):
     }
 
 
-admin.site.register(Sections)
+class SectionsAdmin(admin.ModelAdmin):
+    formfield_overrides = {
+        models.TextField: {'widget': TinyMCE()},
+        models.ManyToManyField: {'widget': CheckboxSelectMultiple},
+    }
+
+
+admin.site.register(Sections, SectionsAdmin)
 admin.site.register(Volume)
 admin.site.register(Manuscript, JournalAdmin)
 admin.site.register(Announcement)
@@ -43,6 +49,12 @@ admin.site.register(Post, PostAdmin)
 admin.site.register(Author)
 admin.site.register(Bug)
 admin.site.register(Contact)
+
 admin.site.register(ManuscriptReview)
 
 admin.site.register(Issue)
+admin.site.register(BlogPost)
+admin.site.register(BlogCategory)
+admin.site.register(BlogImage)
+
+admin.site.register(OrnithologyObservation)

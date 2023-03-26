@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en-US" dir="ltr">
+
+<head>
+    <title>Create post </title>
+    {% include 'head.html' %}
+    <script src="https://cdn.tiny.cloud/1/kijo1ibwovaefiskqjy9yj6uzbqciuf62eovavqow84hz7qa/tinymce/6/tinymce.min.js"
+            referrerpolicy="origin"></script>
+
+</head>
+
+
+<body>
+{% include 'menu.html' %}
+
+<div class="container px-0 d-flex align-items-center justify-content-center mt-4 mb-2 shadow-sm"
+     style="border-radius: 12px;">
+    {% include 'web/dashboard/menu.html' %}
+
+</div>
+<div class="row">
+
+    <div class="col-12">
+        <div class="container my-3 p-4">
+            <h3 class="mb-3">Create a new post</h3>
+            <form method="post" action="{% url 'create_blog_view' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="postTitle" class="form-label">Post Title</label>
+                    <input type="text" class="form-control" id="postTitle" name="postTitle" required/>
+                </div>
+                <div class="mb-3">
+                    <label for="postURL" class="form-label">URL</label>
+                    <input type="text" class="form-control" required name="postURL" id="postURL" maxlength="150">
+                </div>
+                <div class="mb-3">
+                    <label for="postContent" class="form-label">Post Content</label>
+                    <textarea class="form-control" id="postContent" rows="20" name="html_content" required>
+
+            </textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label for="postCategory" class="form-label">Post Category</label>
+                    <select class="form-control w-50" id="postCategory" name="category" required>
+                        <option value="">Select a category</option>
+                        {% for cat in cats %}
+                            <option value="{{ cat.id }}">{{ cat.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="postMeta" class="form-label">Search Engine Description</label>
+                    <input type="text" class="form-control" required name="postMeta" id="postMeta" maxlength="150">
+                </div>
+                <style>
+                    #file-upload-button{
+                        margin-top:-20px!important;
+                    }
+                </style>
+                <div class="mb-3">
+                    <label for="postFeaturedImage" class="form-label">Featured Image</label>
+                    <input type="file" id="postFeaturedImage" class="form-control shadow-sm" name="featured_image">
+                </div>
+
+                <div class="d-flex justify-content-end">
+                    <button type="submit" class="btn btn-success border btn-lg mt-3 mb-4" name="publish">Publish
+                    </button>
+
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+<!-- ===============================================-->
+<!--    Main Content-->
+<!-- ===============================================-->
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+        integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"
+        integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD"
+        crossorigin="anonymous"></script>
+
+<script>
+    tinymce.init({
+        selector: 'textarea',
+        plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
+        toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+        images_upload_url: '/tinymce_image_upload/'
+    });
+</script>
+<script>
+    const postTitleInput = document.getElementById('postTitle');
+    const postURLInput = document.getElementById('postURL');
+
+    postTitleInput.addEventListener('input', () => {
+        const title = postTitleInput.value;
+        const postURL = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+
+        postURLInput.value = postURL;
+    });
+
+</script>
+
+</body>
+
+</html>

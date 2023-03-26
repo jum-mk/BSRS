@@ -1,0 +1,58 @@
+{% load static %}
+{% load honeypot %}
+<style>
+    .nav-link {
+        font-size: 14px;
+    }
+
+    .collapsed .navbar-toggler-icon i {
+        color: darkgrey;
+    }
+
+    .navbar-toggler-icon i {
+        color: black;
+    }
+</style>
+<nav class="navbar navbar-expand-lg navbar-light container d-flex justify-content-between w-100 shadow-sm sticky-top"
+     style="background-color:#FFFFFF; z-index: 999;">
+    <a class="navbar-brand" href="{% url 'index' %}">
+        <img src="{% static 'img/logo.png' %}" width="35" height="35" class=" ms-2 ms-md-0" alt="">
+    </a>
+    <button class="navbar-toggler align-item-center justify-content-end" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon m-0 w-100 d-flex align-items-center justify-content-center"
+              style="background-image: none;">
+            <i class="bi bi-three-dots m-0 d-flex align-items-center justify-content-center"
+               style="width: 30px; height: 30px; "></i>
+        </span>
+    </button>
+    <div class="collapse navbar-collapse w-100" id="navbarSupportedContent" align="center">
+        <ul class="navbar-nav mr-auto w-100">
+            <li class="nav-item active">
+                <a class="nav-link btn badge-pill" href="{% url 'index' %}">Почетна</a>
+            </li>
+            <a class="nav-link btn badge-pill text-dark" href="#sections">Секции</a>
+            <a class="nav-link btn badge-pill text-dark" href="#research_actions">Истражувачки акции</a>
+            <a class="nav-link btn badge-pill text-dark" href="{% url 'journal_index' %}">Публикации</a>
+        </ul>
+        <hr>
+
+        <div class="d-flex pt-1 pb-1 mt-2 mb-2 d-flex justify-content-center justify-content-lg-end align-items-center w-100"
+             style="border-radius:10px;">
+            {% if request.user.is_staff %}
+                <a class="badge  btn-outline-light p-2  ms-1 mx-2 shadow-sm text-dark"
+                   data-bs-target="#loginModal" type="button" style="cursor: pointer;" data-bs-toggle="modal">Најави
+                    се</a>
+            {% else %}
+                <a class="badge btn-outline-danger p-2  ms-1 mx-2 shadow-sm text-dark" type="button">Одјави се</a>
+                <a class="badge btn-outline-light p-2  ms-1 mx-2 shadow-sm text-dark"
+                   type="button" style="cursor: pointer;" data-bs-toggle="modal">Најави се</a>
+            {% endif %}
+        </div>
+        <hr>
+    </div>
+</nav>
+<script>
+
+</script>

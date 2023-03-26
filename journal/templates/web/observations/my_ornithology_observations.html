@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+{% load static %}
+
+
+<html lang="en">
+<head>
+    {% include 'head.html' %}
+    <meta name="generator" content="Jum Scientific Journal v1.0.1">
+    <title>{{ abstract.citation_title }}</title>
+    <meta name="description" content="{{ abstract.citation_title }}">
+    <meta charset="UTF-8">
+    <meta name=”robots” content="index, follow">
+
+    <style>
+        .contact-author {
+        }
+
+
+        @media only screen and (max-width: 767px) {
+
+        }
+
+    </style>
+</head>
+<body style="padding: 0 10px;">
+{% include 'web/menu.html' %}
+<div class="container d-flex justify-content-center align-items-center flex-column mt-3 "
+     style="background: transparent;">
+
+    <a class="badge  btn-outline-light p-2  ms-1 mx-2 shadow-sm text-dark mb-2 mt-3"
+       style="font-size:14px; cursor: pointer;"
+    >Your ornithological observations </a>
+    <a class="d-flex align-items-center justify-content-center p-4 badge btn-light mt-4"
+       href="{% url 'create_ornithology_observation' %}"
+       style=" border: 1px dashed #777777; cursor:pointer;">
+        <i class="bi bi-plus" style="font-size:50px; font-weight: 100; color: #7c7c7c;"></i>
+        <p class="m-0 p-0" style="color: #6b6b6b;">Add new observation</p>
+
+        <a class="  ms-1 mx-2 shadow-sm mb-4 mt-4 mt-3"
+           style="font-size:14px; cursor: pointer; color:#737373;">
+        </a>
+    </a>
+
+</div>
+<div class="container d-flex justify-content-center align-items-center flex-column shadow-sm p-3 mb-2 mt-2 bg-white"
+     style="border-radius: 10px;">
+
+    <div class="table-responsive text-nowrap" style="cursor: move;">
+        <table class="table table-striped my-table table-bordered">
+            <thead>
+            <tr style="font-size:13px;">
+                <th scope="col">Species</th>
+                <th scope="col">Date & Time</th>
+                <th scope="col">Region</th>
+
+                <th scope="col">Locality</th>
+                <th scope="col">Habitat</th>
+                <th scope="col">Coordinates</th>
+                <th scope="col">Altitude</th>
+                <th scope="col">Note</th>
+                <th scope="col">Age</th>
+                <th scope="col">Sex</th>
+                <th scope="col">Voice</th>
+                <th scope="col">Breeding code</th>
+                <th scope="col">Max No.</th>
+                <th scope="col">Min.No</th>
+
+                <th scope="col">Reporter</th>
+                <th scope="col">Is confirmed?</th>
+
+                <th scope="col">edit</th>
+                <th scope="col">delete</th>
+            </tr>
+            </thead>
+            <tbody class="table-group-divider" style="font-size:13px;">
+            {% for x in observations %}
+                <tr class="align-middle">
+                    <td><i>{{ x.species }}</i></td>
+                    <td>{{ x.date }} | {{ x.time }}</td>
+                    <td>{{ x.region }}</td>
+
+                    <td>{{ x.locality }}</td>
+                    <td>{{ x.habitats }}</td>
+
+                    <td>{{ x.latitude }}, {{ x.longitude }}</td>
+                    <td>{{ x.altitude }}</td>
+                    <td>{{ x.note }}</td>
+                    <td>{{ x.age }}</td>
+                    <td>{{ x.sex }}</td>
+                    <td>{{ x.voice }}</td>
+                    <td>{{ x.breeding_code }}</td>
+
+                    <td>{{ x.max_no }}</td>
+                    <td>{{ x.min_no }}</td>
+
+                    <td>{{ x.user }}</td>
+                    <td>{{ x.is_confirmed }}</td>
+
+
+                    <td>
+                        <button class="btn-sm btn-warning btn">Edit</button>
+                    </td>
+                    <td>
+                        <button class="btn-sm btn-danger btn">Delete</button>
+                    </td>
+                </tr>
+            {% endfor %}
+
+            </tbody>
+        </table>
+
+    </div>
+
+
+</div>
+{%  include 'web/footer.html' %}
+
+</body>
+</html>
