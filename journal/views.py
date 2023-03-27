@@ -11,6 +11,7 @@ from django.core.mail import send_mail
 from django.utils.crypto import get_random_string
 from .models import BlogImage
 from django.views.decorators.csrf import csrf_exempt
+from django.utils.encoding import smart_text
 
 
 def create_finding(request):
@@ -264,16 +265,19 @@ def create_blog_view(request):
         if request.method == 'POST':
             data = request.POST
             print(request.FILES)
+            print(data['postURL'])
             post = BlogPost()
-            post.title = data['postTitle']
-            post.meta_description = data['postMeta']
+            post.title = smart_text(data['postTitle'])
+            post.meta_description = smart_text(data['postMeta'])
             try:
                 BlogPost.objects.get(slug=data['postURL'])
-                post.slug = data['postURL'] + '-' + get_random_string(5)
+                post.slug = smart_text(data['postURL']) + '-' + get_random_string(5)
             except ObjectDoesNotExist:
-                post.slug = data['postURL']
+                post.slug = smart_text(data['postURL'])
+
+            print(post.slug)
             post.category = BlogCategory.objects.get(id=int(data['category']))
-            post.content = data['html_content']
+            post.content = smart_text(data['html_content'])
             post.featured_image = request.FILES['featured_image']
             print(post.featured_image)
 
