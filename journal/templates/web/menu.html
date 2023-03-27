@@ -41,9 +41,8 @@
         <div class="d-flex pt-1 pb-1 mt-2 mb-2 d-flex justify-content-center justify-content-lg-end align-items-center w-100"
              style="border-radius:10px;">
             {% if request.user.is_staff %}
-                <a class="badge  btn-outline-light p-2  ms-1 mx-2 shadow-sm text-dark"
-                   data-bs-target="#loginModal" type="button" style="cursor: pointer;" data-bs-toggle="modal">Најави
-                    се</a>
+                <a href="{% url 'dashboard-posts' %}" class="badge btn-outline-light p-2  ms-1 mx-2 shadow-sm text-dark"
+                  type="button" style="cursor: pointer;" data-bs-toggle="modal">Сите постови</a>
             {% else %}
                 <a class="badge btn-outline-danger p-2  ms-1 mx-2 shadow-sm text-dark" type="button">Одјави се</a>
                 <a class="badge btn-outline-light p-2  ms-1 mx-2 shadow-sm text-dark"
