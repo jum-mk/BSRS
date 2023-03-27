@@ -16,13 +16,13 @@
         <meta property="og:image" content="{{ post.get_image }}"/>
         <meta property="og:type" content="website"/>
         <style>
-            img {
+            #contentHolder img {
                 max-width: 100%;
                 border-radius: 12px;
                 box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .35) !important
             }
 
-            img:hover {
+            #contentHolder img:hover {
                 box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .55) !important
 
             }
@@ -58,9 +58,9 @@
         <div class="container shadow-sm p-3 mb-2 bg-white shadow" style="border-radius: 12px;">
             <div class="col-md-auto p-0">
 
-                <p class="m-0">
+                <div class="m-0" id="contentHolder">
                     {{ post.content|safe }}
-                </p>
+                </div>
 
             </div>
         </div>
