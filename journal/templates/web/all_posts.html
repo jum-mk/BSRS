@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Сите објави</title>
+
+    {% include 'head.html' %}
+
+    <meta name="description"
+          content="The Biology Students’ Research Society (BSRS) is a youth research organization established in 1995.
+          It started as a progressive idea from enthusiastic biology students thriving for more challenges and grew to
+          be one of the oldest youth organizations in the country today. ">
+    <style>
+        .site-title {
+            color: black;
+        }
+
+        .aim-text {
+        }
+
+        .aim-title {
+        }
+
+        .shimmer {
+            color: grey;
+            display: inline-block;
+            -webkit-mask: linear-gradient(-60deg, #000 30%, rgba(210, 59, 59, 0.33), #940000 70%) right/300% 100%;
+            background-repeat: no-repeat;
+            animation: shimmer 5s;
+            font-size: 50px;
+            filter: brightness(80%);
+        }
+
+        @keyframes shimmer {
+            100% {
+                -webkit-mask-position: left
+            }
+        }
+
+        @media only screen and (max-width: 767px) {
+            .site-title {
+                color: black;
+                font-size: 20px;
+            }
+
+            .aim-title {
+                font-size: 20px;
+            }
+        }
+
+        .btn-light:hover {
+            color: #212529;
+            background-color: #baf6ff;
+            border-color: #dae0e5;
+        }
+
+        .section-box {
+            padding: 20px;
+            border-radius: 100px;
+            transition: 0.2s;
+        }
+
+        .section-box:hover {
+            background: #e0e0e0;
+        }
+
+        .section-box:active {
+            padding: 30px;
+        }
+
+        .learn-more {
+            background: transparent;
+        }
+
+        .learn-more:hover {
+            background: rgba(30, 196, 77, 0.11);
+        }
+
+        .like-button {
+            background: transparent;
+            transition: 3s;
+
+        }
+
+    </style>
+</head>
+<body style="padding: 0 10px;">
+{% include 'web/menu.html' %}
+
+
+<div class="container py-2 mb-3 px-0" style="background-color:transparent;">
+    <div class="row">
+        <div class="d-flex pt-1 pb-1 mt-2 mb-2 d-flex justify-content-center justify-content-lg-start align-items-center w-100"
+             style="border-radius:10px;">
+            <a class="badge  btn-outline-light p-2  ms-1 mx-2 shadow-sm text-dark"
+               href="{% url 'contact' %}">Најнови објави</a>
+
+        </div>
+        {% for post in posts %}
+
+            <a href="{{ post.get_absolute_url }}"
+               class="col-md-6 col-lg-4 d-flex justify-content-center align-items-center flex-column p-3 card-holder">
+                <div class="card shadow-lg justify-content-between w-100 h-100"
+                     style="border-radius: 10px; text-decoration:none;">
+                    <div class="mb-2 mb-lg-2 shadow"
+                         style="border-radius: 10px 10px 0 0 ;
+                                 background-image: url( {{ post.get_image }} );
+                                 background-position: center;
+                                 background-size: cover;
+                                 height: 175px; min-height: 190px; width:100%;">
+                    </div>
+                    <div class="px-2 pb-2 mb-0">
+                        <h6 class="d-flex align-items-center justify-content-start m-0"
+                            style="min-height: 50px; font-weight: 700;">
+                            {{ post.title }}
+                        </h6>
+                    </div>
+                </div>
+            </a>
+        {% endfor %}
+
+    </div>
+</div>
+
+<div class="container p-3" style="background-color:transparent;" id="sections">
+    <div class="row">
+        <div class="d-flex pt-1 pb-1 mt-2 mb-2 d-flex justify-content-center justify-content-lg-start align-items-center w-100"
+             style="border-radius:10px;">
+            <a class="badge  btn-outline-light p-2  ms-1 mx-2 shadow-sm text-dark"
+               href="{% url 'contact' %}">Секции</a>
+
+        </div>
+        {% for section in sections %}
+            <div class="col-6 col-md-3 col-lg-3 mb-3 mt-3 section-box" style="cursor:pointer; ">
+                <a class="shrink-box" href="{{ section.get_absolute_url }}"
+                   style="text-decoration: none; color: #5d5d5d;">
+                    <div class="bg-light shadow border d-flex justify-content-start align-items-center flex-column "
+                         style="border-radius:10px; padding:20px;">
+
+                        <div class="d-flex align-items-center justify-content-center h-100 p-0 flex-column">
+                            <img src="{{ section.icon.url }}" style="border-radius: 5px; width: 50px; height: 50px;"
+                                 alt="{{ section.title }}">
+                            <h6 align="center" class="m-3" style="font-weight: 700;">{{ section.title_mk }}</h6>
+                        </div>
+
+                    </div>
+                </a>
+
+            </div>
+        {% endfor %}
+
+    </div>
+</div>
+{% include 'web/footer.html' %}
+</body>
+</html>

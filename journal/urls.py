@@ -23,6 +23,8 @@ from .api import FindingList, FindingDetail
 urlpatterns = [
     path('journal_index/', views.journal_index, name='journal_index'),
     path('', views.index, name='index'),
+    path('all_posts/', views.all_posts, name='all_posts'),
+
     path('post/<slug>/', views.single_post, name='single_post'),
     path('findings/', views.create_finding, name='findings'),
     path('abstract/<slug_field>/', views.abstract, name='abstract-detail'),
