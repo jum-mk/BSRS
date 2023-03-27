@@ -282,7 +282,7 @@ def create_blog_view(request):
 
             post.category = BlogCategory.objects.get(id=int(data['category']))
             post.content = smart_text(data['html_content'])
-            post.featured_image = request.FILES['featured_image']
+            post.featured_image = request.FILES['featured_image'].name.encode('utf-8')
 
             if post.featured_image is None:
                 print('dead')
