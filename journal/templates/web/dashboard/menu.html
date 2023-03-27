@@ -1,26 +1,20 @@
-<ul class="p-0 d-flex m-0 mt-3 mb-3" style="border-radius: 0;">
-
-    <hr class="m-3">
-    <li class="nav-item " style="list-style-type: none;">
-        <a class="px-3 py-2"
-           href="{% url 'create_blog_view' %}">
-            <span class="fa fa-plus-circle me-2 "></span>
-            Create post
-        </a>
-    </li>
-    <li class="nav-item " style="list-style-type: none;">
-        <a class="px-3 py-2 " style="font-weight: 600;"
+<ul class="p-0 d-flex m-0 mt-3 mb-3 d-flex align-items-center" style="border-radius: 0;">
+    <li class="nav-item mx-2" style="list-style-type: none;">
+        <a class=" btn btn-sm border btn-light d-flex align-items-center justify-content-between " style="font-weight: 700;"
            href="{% url 'dashboard-posts' %}">
-            <span class="fa fa-book me-2 "></span>
-            All Posts
+            <span>Сите објави</span>
         </a>
     </li>
-
-    <li class="nav-item" style="list-style-type: none;">
-        <a class="px-3 py-2"
+       <li class="nav-item mx-2" style="list-style-type: none;">
+        <a class=" btn btn-sm border btn-success d-flex align-items-center justify-content-between " style="font-weight: 700;"
+           href="{% url 'create_blog_view' %}">
+            <span>Нова објава</span>
+        </a>
+    </li>
+   <li class="nav-item mx-2" style="list-style-type: none;">
+        <a class=" btn btn-sm border btn-info d-flex align-items-center justify-content-between " style="font-weight: 700;"
            href="{% url 'dashboard-cats' %}">
-            <span class="fa fa-list me-2 "></span>
-            Post categories
+            <span>Категории</span>
         </a>
     </li>
 

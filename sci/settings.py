@@ -74,8 +74,8 @@ WSGI_APPLICATION = 'sci.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        # 'NAME': '/Users/yellowflash/PycharmProjects/sci/db.sqlite3',
-        'NAME': '/home/anovindooel/apps/bsrs/db.sqlite3',
+        'NAME': '/Users/yellowflash/PycharmProjects/sci/db.sqlite3',
+        # 'NAME': '/home/anovindooel/apps/bsrs/db.sqlite3',
     }
 }
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

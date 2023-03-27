@@ -16,11 +16,10 @@
 
 <div class="container shadow-sm" style="border-radius: 12px;">
     <div class=" d-flex flex-column p-3 mb-4">
-        <h3 class="text-bold mb-5">Education categories</h3>
+        <h3 class="text-bold mb-4 mt-2">Категории на објави</h3>
         <div class="row align-items-center justify-content-between">
             <div class="col col-auto">
-                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createCat">+ Add a new
-                    category
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createCat">+ Додај нова категорија
                 </button>
 
             </div>
@@ -39,8 +38,8 @@
         <table class="table">
             <thead>
             <tr>
-                <th scope="col">Category name</th>
-                <th scope="col">Remove category</th>
+                <th scope="col">Име на категорија</th>
+                <th scope="col">Избриши</th>
             </tr>
             </thead>
             <tbody>
@@ -76,21 +75,20 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title fs-1" id="CreateServiceModalLabel">Create a post category</h4>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h4 class="modal-title fs-1" id="CreateServiceModalLabel">Креирај нова категорија</h4>
             </div>
             <div class="modal-body">
                 <form method="post" action="{% url 'dashboard-cats' %}" id="addNewServicetForm">
                     {% csrf_token %}
                     <input type="hidden" name="add" value="0">
                     <div class="mb-3">
-                        <label for="cat_name" class="form-label">Category Name</label>
+                        <label for="cat_name" class="form-label">Име на категорија</label>
                         <input type="text" class="form-control" id="cat_name" name="cat_name" required>
                     </div>
 
                     <div class="modal-footer pe-0 mt-3 mt-4 mb-2 pt-3">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Назад</button>
+                        <button type="submit" class="btn btn-primary">Зачувај</button>
                     </div>
                 </form>
             </div>
