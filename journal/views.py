@@ -277,6 +277,7 @@ def create_blog_view(request):
             post = BlogPost()
             post.title = smart_text(data['postTitle'])
             post.meta_description = smart_text(data['postMeta'])
+            post.is_draft = False
             try:
                 BlogPost.objects.get(slug=data['postURL'])
                 post.slug = smart_text(data['postURL']) + '-' + get_random_string(5)
