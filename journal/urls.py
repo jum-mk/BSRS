@@ -57,7 +57,12 @@ urlpatterns = [
 
     path('edit_post/<int:id>/', views.edit_single_blog_view, name='edit_single_blog_view'),
     path('edit_post/', views.edit_post, name='edit_post'),
-    path('tinymce_image_upload/', views.tinymce_image_upload, name='tinymce_image_upload')
+    path('tinymce_image_upload/', views.tinymce_image_upload, name='tinymce_image_upload'),
+
+    # users
+    path('sign_out/', views.sign_out, name='sign_out'),
+
+
 ]
 
 if settings.DEBUG is True:

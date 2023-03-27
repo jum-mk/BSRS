@@ -42,9 +42,11 @@
              style="border-radius:10px;">
             {% if request.user.is_staff %}
                 <a href="{% url 'dashboard-posts' %}" class="badge btn-outline-light p-2  ms-1 mx-2 shadow-sm text-dark"
-                  type="button" style="cursor: pointer;" data-bs-toggle="modal">Сите постови</a>
+                   type="button" style="cursor: pointer;" data-bs-toggle="modal">Сите постови</a>
+                <a href="{% url 'sign_out' %}" class="badge btn-outline-danger p-2  ms-1 mx-2 shadow-sm text-dark"
+                   type="button">Одјави се</a>
+
             {% else %}
-                <a class="badge btn-outline-danger p-2  ms-1 mx-2 shadow-sm text-dark" type="button">Одјави се</a>
                 <a class="badge btn-outline-light p-2  ms-1 mx-2 shadow-sm text-dark"
                    type="button" style="cursor: pointer;" data-bs-toggle="modal">Најави се</a>
             {% endif %}

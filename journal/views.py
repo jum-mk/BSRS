@@ -2,20 +2,22 @@
 # -*- coding: utf-8 -*-
 """
 
-from django.db.models import Count
-from .filters import ManuscriptFilter
-from django.http import HttpResponse
-from .forms import *
 import json
-from django.shortcuts import render, redirect, get_object_or_404
-from django.db.models import ObjectDoesNotExist
-from rest_framework.exceptions import status
-from .models import *
+
 from django.core.mail import send_mail
+from django.db.models import Count
+from django.db.models import ObjectDoesNotExist
+from django.http import HttpResponse
+from django.shortcuts import render, redirect, get_object_or_404
 from django.utils.crypto import get_random_string
-from .models import BlogImage
-from django.views.decorators.csrf import csrf_exempt
 from django.utils.encoding import smart_text
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework.exceptions import status
+
+from .filters import ManuscriptFilter
+from .forms import *
+from .models import *
+from .models import BlogImage
 
 
 def create_finding(request):
@@ -262,6 +264,14 @@ def single_section(request, slug_field):
     sections = Sections.objects.all()
 
     return render(request, 'web/single_section.html', context={'section': section, 'sections': sections})
+
+
+from django.contrib.auth import logout
+
+
+def sign_out(request):
+    logout(request)
+    return redirect('index')
 
 
 from io import BytesIO
