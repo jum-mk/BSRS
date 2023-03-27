@@ -31,6 +31,44 @@ nav {
     border-color: rgb(0 0 0 / 0%);
 }
 
+#blogHero {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-position: center;
+    background-size: cover;
+    color: whitesmoke;
+    border-radius: 12px;
+    height: 300px;
+    z-index: -1;
+}
+
+#blogHero::before {
+    content: "";
+    background-size: cover;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.30);
+    border-radius: 12px !important;
+
+}
+
+.card-holder {
+    transition: 1s;
+    color: black;
+}
+
+.card-holder:hover {
+    padding: 20px !important;
+    cursor: pointer;
+
+}
+
 
 .container {
     background-color: #FFFFFF;
