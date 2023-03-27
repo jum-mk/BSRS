@@ -1,6 +1,7 @@
 
 body {
     background-color: #00183a12;
+    overflow-x: hidden;
 }
 
 nav {

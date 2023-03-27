@@ -1,6 +1,7 @@
 
 body {
     background-color: #00183a12;
+    overflow-x:hidden;
 }
 
 nav {
@@ -111,6 +112,3 @@ nav {
     padding: 0 !important;
 }
 
-body {
-    padding: 0 !important;
-}
