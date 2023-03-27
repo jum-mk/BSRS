@@ -12,7 +12,7 @@ SECRET_KEY = '*2^-hf$%)08eyj7*1&_q%fs_5j7*1&_q%fs_5j7*1&_q%fs_5b0h&qm0$u)#!f0cy0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['idsbiolozi.com', 'www.idsbiolozi.com', '127.0.0.1']
+ALLOWED_HOSTS = ['idsbiolozi.com', 'www.idsbiolozi.com', '127.0.0.1', '34.141.0.143']
 
 INTERNAL_IPS = [
     '127.0.0.1',
@@ -107,7 +107,7 @@ WSGI_APPLICATION = 'sci.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'db.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
