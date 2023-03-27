@@ -329,7 +329,7 @@ def edit_single_blog_view(request, id):
 
 
 def edit_post(request):
-    if request.user.staff and request.user.is_authenticated:
+    if request.user.is_staff and request.user.is_authenticated:
         if request.method == 'POST':
             data = request.POST
             post = get_object_or_404(BlogPost, id=int(data['post_id']))
