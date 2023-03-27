@@ -4,15 +4,17 @@
 
 import json
 
+from django.contrib.auth import authenticate, login
 from django.core.mail import send_mail
 from django.db.models import Count
 from django.db.models import ObjectDoesNotExist
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils.crypto import get_random_string
-from django.utils.encoding import smart_text
 from django.views.decorators.csrf import csrf_exempt
+from rest_framework.decorators import api_view
 from rest_framework.exceptions import status
+from rest_framework.response import Response
 
 from .filters import ManuscriptFilter
 from .forms import *
@@ -291,17 +293,17 @@ def create_blog_view(request):
             print('--------' * 100)
 
             post = BlogPost()
-            post.title = smart_text(data['postTitle'])
-            post.meta_description = smart_text(data['postMeta'])
+            post.title = data['postTitle']
+            post.meta_description = data['postMeta']
             post.is_draft = False
             try:
                 BlogPost.objects.get(slug=data['postURL'])
-                post.slug = smart_text(data['postURL']) + '-' + get_random_string(5)
+                post.slug = data['postURL'] + '-' + get_random_string(5)
             except ObjectDoesNotExist:
-                post.slug = smart_text(data['postURL'])
+                post.slug = data['postURL']
 
             post.category = BlogCategory.objects.get(id=int(data['category']))
-            post.content = smart_text(data['html_content'])
+            post.content = data['html_content']
             image_data = BytesIO(request.FILES['featured_image'].read())
             image_name = request.FILES['featured_image'].name.encode('utf-8').decode('utf-8')
             post.featured_image.save(image_name, image_data)
@@ -442,10 +444,24 @@ def parse_xml_file():
             post.save()
 
 
-from django.http import JsonResponse
-
-
 def delete_post(request):
     data = json.loads(request.body.decode('utf-8'))
     Post.objects.all().delete()
     return JsonResponse({'status': 'deleted'})
+
+
+@api_view(['GET', 'POST'])
+def sign_in(request):
+    if request.method == 'POST':
+        data = request.data
+        username = data.get('username')
+        password = data.get('password')
+        user = authenticate(username=username, password=password)
+        print(data)
+        if user is not None:
+            login(request, user)
+            return Response(status=status.HTTP_200_OK)
+        else:
+            return Response(status=status.HTTP_403_FORBIDDEN)
+    else:
+        return render(request, 'en/sign-in.html', context=None)

@@ -13,17 +13,20 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.urls import path, include
-from . import views
-from django.conf.urls.static import static
 from django.conf import settings
-from .views import volumeview
+from django.conf.urls.static import static
+from django.urls import path, include
+
+from . import views
 from .api import FindingList, FindingDetail
+from .views import volumeview
 
 urlpatterns = [
     path('journal_index/', views.journal_index, name='journal_index'),
     path('', views.index, name='index'),
     path('all_posts/', views.all_posts, name='all_posts'),
+    path('sign-in/', views.sign_in, name='sign-in'),
+    path('all_posts/', views.all_posts, name='forgot-password'),
 
     path('post/<slug>/', views.single_post, name='single_post'),
     path('findings/', views.create_finding, name='findings'),
@@ -63,7 +66,6 @@ urlpatterns = [
 
     # users
     path('sign_out/', views.sign_out, name='sign_out'),
-
 
 ]
 

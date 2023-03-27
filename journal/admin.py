@@ -1,13 +1,11 @@
 from django.contrib import admin
 from .models import *
-from tinymce.widgets import TinyMCE
 from django.db import models
 from django.forms import CheckboxSelectMultiple
 
 
 class JournalAdmin(admin.ModelAdmin):
     formfield_overrides = {
-        models.TextField: {'widget': TinyMCE()},
         models.ManyToManyField: {'widget': CheckboxSelectMultiple},
     }
     prepopulated_fields = {"slug_field": ("citation_title",)}
@@ -28,14 +26,12 @@ class JournalAdmin(admin.ModelAdmin):
 
 class PostAdmin(admin.ModelAdmin):
     formfield_overrides = {
-        models.TextField: {'widget': TinyMCE()},
         models.ManyToManyField: {'widget': CheckboxSelectMultiple},
     }
 
 
 class SectionsAdmin(admin.ModelAdmin):
     formfield_overrides = {
-        models.TextField: {'widget': TinyMCE()},
         models.ManyToManyField: {'widget': CheckboxSelectMultiple},
     }
 

@@ -48,13 +48,96 @@
                    type="button">Одјави се</a>
 
             {% else %}
-                <a class="badge btn-outline-light p-2  ms-1 mx-2 shadow-sm text-dark"
-                   type="button" style="cursor: pointer;" data-bs-toggle="modal">Најави се</a>
+
+                <button type="button" class=" btn badge btn-outline-light p-2  ms-1 mx-2 shadow-sm text-dark"
+                        data-toggle="modal" data-target="#staticBackdrop">
+                    Најави
+                    се
+                </button>
+
+                <!-- Modal -->
+
+
             {% endif %}
         </div>
         <hr>
     </div>
 </nav>
-<script>
 
+
+<div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Најави се</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <form class="d-flex flex-column align-items-center justify-content-center">
+
+                    {% csrf_token %}
+
+                    <div class="mb-3 text-start w-100">
+                        <label class="form-label" for="email">Username</label>
+                        <div class="form-icon-container">
+                            <input class="form-control form-icon-input" id="username" type="text" autocomplete="true"
+                                   placeholder="Your username"/>
+                        </div>
+                    </div>
+                    <div class="mb-4 text-start w-100">
+                        <label class="form-label" for="password">Password</label>
+                        <div class="form-icon-container">
+                            <input class="form-control form-icon-input" id="password" type="password" autocomplete="true"
+                                   placeholder="Password"/>
+                        </div>
+                    </div>
+                    <button class="btn btn-success w-100 mb-3" style="background: #148f5c; font-weight: 700;" id="signInButton">Најави се
+                    </button>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+    const signInButton = document.getElementById('signInButton')
+
+    function logIn() {
+        let xhr = new XMLHttpRequest();
+        xhr.open("POST", "/sign-in/", true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.setRequestHeader('X-CSRFToken', document.querySelector("input[name=csrfmiddlewaretoken]").value)
+
+        let data = {
+            username: document.getElementById("username").value,
+            password: document.getElementById("password").value
+        };
+
+        xhr.onreadystatechange = function (event) {
+            event.stopImmediatePropagation();
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                // success
+                console.log(xhr.response);
+                let dashboard_url = `{% url 'dashboard-posts' %}`
+                window.open(dashboard_url, '_self')
+            } else if (xhr.status === 403) {
+                console.log(xhr.response);
+                alert('Invalid email or password.')
+            }
+        };
+        xhr.send(JSON.stringify(data));
+    }
+
+    signInButton.addEventListener('click', (event) => {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        logIn()
+    });
 </script>

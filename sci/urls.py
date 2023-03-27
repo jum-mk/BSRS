@@ -1,13 +1,13 @@
-from django.contrib import admin
-from django.urls import path, include
-from django.conf.urls.static import static
+import debug_toolbar
 from django.conf import settings
+from django.conf.urls.static import static
+from django.contrib import admin
 from django.contrib.sitemaps import GenericSitemap
 from django.contrib.sitemaps.views import sitemap
-from journal.models import Manuscript
-from . import views
+from django.urls import path, include
 from schema_graph.views import Schema
-import debug_toolbar
+
+from journal.models import Manuscript
 
 info_dict = {
     'queryset': Manuscript.objects.all(),
@@ -18,10 +18,7 @@ admin.AdminSite.site_title = 'ИДСБ'
 
 urlpatterns = [
     path('', include('journal.urls')),
-    path('', include('pwa.urls')),
     path('secret/', admin.site.urls),
-    path('admin/', include('admin_honeypot.urls', namespace='admin_honeypot')),
-    path('tinymce/', include('tinymce.urls')),
     path('static', static),
     path('sitemap.xml', sitemap,
          {'sitemaps': {'manuscripts': GenericSitemap(info_dict, priority=0.6)}},

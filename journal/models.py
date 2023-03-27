@@ -1,6 +1,5 @@
 from django.db import models
 from django.urls import reverse
-from tinymce.models import HTMLField
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
@@ -93,14 +92,14 @@ class Manuscript(models.Model):
     udc = models.CharField(max_length=8)
     # These are all important
     citation_title = models.CharField(max_length=255, verbose_name='Manuscript title')
-    title = HTMLField(verbose_name='Decorated title')
+    title = models.TextField(verbose_name='Decorated title')
     citation_date = models.DateField(verbose_name='Publishing date')
     citation_volume = models.ForeignKey(Volume, on_delete=models.CASCADE, verbose_name='Volume', db_index=True)
     citation_firstpage = models.CharField(max_length=10, verbose_name='First page number')
     citation_lastpage = models.CharField(max_length=10, verbose_name='Last page number')
     authors = models.ManyToManyField(Author, verbose_name='Author/s', db_index=True)
     reference_author = models.EmailField(max_length=60, verbose_name='Reference author')
-    abstract = HTMLField(verbose_name='Abstract')
+    abstract = models.TextField(verbose_name='Abstract')
     keywords = models.CharField(max_length=300, verbose_name='Key words')
     section = models.ForeignKey(Sections, on_delete=models.CASCADE, default=1, verbose_name='Section')
     # PDF
