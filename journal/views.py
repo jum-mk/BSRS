@@ -99,7 +99,7 @@ def index(request):
 def all_posts(request):
     blog_posts = BlogPost.objects.all()
     sections = Sections.objects.all()
-    return render(request, template_name='index.html', context={'posts': blog_posts, 'sections': sections})
+    return render(request, template_name='web/all_posts.html', context={'posts': blog_posts, 'sections': sections})
 
 
 def single_post(request, slug):
