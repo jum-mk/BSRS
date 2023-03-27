@@ -288,7 +288,7 @@ def create_blog_view(request):
             image_data = BytesIO(request.FILES['featured_image'].read())
             image_name = request.FILES['featured_image'].name.encode('utf-8')
             post.featured_image.save(image_name, image_data)
-
+            print('test')
             if post.featured_image is None:
                 print('dead')
                 return JsonResponse(status.HTTP_403_FORBIDDEN)
