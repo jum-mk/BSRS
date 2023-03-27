@@ -264,6 +264,9 @@ def single_section(request, slug_field):
     return render(request, 'web/single_section.html', context={'section': section, 'sections': sections})
 
 
+from io import BytesIO
+
+
 def create_blog_view(request):
     if request.user.is_authenticated and request.user.is_staff:
         if request.method == 'POST':
@@ -282,7 +285,8 @@ def create_blog_view(request):
 
             post.category = BlogCategory.objects.get(id=int(data['category']))
             post.content = smart_text(data['html_content'])
-            post.featured_image = request.FILES['featured_image'].name.encode('utf-8')
+            image_data = BytesIO(request.FILES['featured_image'].read())
+            post.featured_image.save(request.FILES['featured_image'].name, image_data)
 
             if post.featured_image is None:
                 print('dead')
