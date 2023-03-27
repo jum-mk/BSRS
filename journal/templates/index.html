@@ -131,39 +131,39 @@
 
     </p>
 </div>
-<div class="container py-2 mb-3 px-0" style="background-color:transparent;">
-    <div class="row">
-        <div class="d-flex pt-1 pb-1 mt-2 mb-2 d-flex justify-content-center justify-content-lg-start align-items-center w-100"
-             style="border-radius:10px;">
-            <a class="badge  btn-outline-light p-2  ms-1 mx-2 shadow-sm text-dark"
-               href="{% url 'contact' %}">Најнови објави</a>
+<div class="container p-2 mb-3" style="background-color:transparent;">
 
-        </div>
-        {% for post in posts %}
-
-            <a href="{{ post.get_absolute_url }}"
-               class="col-md-6 col-lg-4 d-flex justify-content-center align-items-center flex-column p-3 card-holder">
-                <div class="card shadow-lg justify-content-between w-100 h-100"
-                     style="border-radius: 10px; text-decoration:none;">
-                    <div class="mb-2 mb-lg-2 shadow"
-                         style="border-radius: 10px 10px 0 0 ;
-                                 background-image: url( {{ post.get_image }} );
-                                 background-position: center;
-                                 background-size: cover;
-                                 height: 175px; min-height: 190px; width:100%;">
-                    </div>
-                    <div class="px-2 pb-2 mb-0">
-                        <h6 class="d-flex align-items-center justify-content-start m-0"
-                            style="min-height: 50px; font-weight: 700;">
-                            {{ post.title }}
-                        </h6>
-                    </div>
-                </div>
-            </a>
-        {% endfor %}
+    <div class="d-flex pt-1 pb-1 mt-2 mb-2 d-flex justify-content-center justify-content-lg-start align-items-center w-100"
+         style="border-radius:10px;">
+        <a class="badge  btn-outline-light p-2  ms-1 mx-2 shadow-sm text-dark"
+           href="{% url 'contact' %}">Најнови објави</a>
 
     </div>
+    {% for post in posts %}
+
+        <a href="{{ post.get_absolute_url }}"
+           class="col-md-6 col-lg-4 d-flex justify-content-center align-items-center flex-column p-3 card-holder">
+            <div class="card shadow-lg justify-content-between w-100 h-100"
+                 style="border-radius: 10px; text-decoration:none;">
+                <div class="mb-2 mb-lg-2 shadow"
+                     style="border-radius: 10px 10px 0 0 ;
+                             background-image: url( {{ post.get_image }} );
+                             background-position: center;
+                             background-size: cover;
+                             height: 175px; min-height: 190px; width:100%;">
+                </div>
+                <div class="px-2 pb-2 mb-0">
+                    <h6 class="d-flex align-items-center justify-content-start m-0"
+                        style="min-height: 50px; font-weight: 700;">
+                        {{ post.title }}
+                    </h6>
+                </div>
+            </div>
+        </a>
+    {% endfor %}
+
 </div>
+
 <div id="core" class="container p-3 mb-3 shadow " style="text-align: justify; border-radius:10px;">
     <h2 class="aim-title mb-3" style="font-size: 25px;" align="left">Цели на друштвото</h2>
 
