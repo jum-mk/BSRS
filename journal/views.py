@@ -1,3 +1,7 @@
+"""python
+# -*- coding: utf-8 -*-
+"""
+
 from django.db.models import Count
 from .filters import ManuscriptFilter
 from django.http import HttpResponse
@@ -264,8 +268,9 @@ def create_blog_view(request):
     if request.user.is_authenticated and request.user.is_staff:
         if request.method == 'POST':
             data = request.POST
-            print(request.FILES)
-            print(data['postURL'])
+            print(data)
+            print('--------' * 100)
+
             post = BlogPost()
             post.title = smart_text(data['postTitle'])
             post.meta_description = smart_text(data['postMeta'])
@@ -275,11 +280,9 @@ def create_blog_view(request):
             except ObjectDoesNotExist:
                 post.slug = smart_text(data['postURL'])
 
-            print(post.slug)
             post.category = BlogCategory.objects.get(id=int(data['category']))
             post.content = smart_text(data['html_content'])
             post.featured_image = request.FILES['featured_image']
-            print(post.featured_image)
 
             if post.featured_image is None:
                 print('dead')
