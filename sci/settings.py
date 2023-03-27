@@ -12,12 +12,11 @@ SECRET_KEY = '*2^-hf$%)08eyj7*1&_q%fs_5j7*1&_q%fs_5j7*1&_q%fs_5b0h&qm0$u)#!f0cy0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['idsbiolozi.com', 'www.idsbiolozi.com']
+ALLOWED_HOSTS = ['idsbiolozi.com', 'www.idsbiolozi.com', '127.0.0.1']
 
 INTERNAL_IPS = [
     '127.0.0.1',
 ]
-
 
 TINYMCE_DEFAULT_CONFIG = {
     'height': 200,
