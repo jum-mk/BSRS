@@ -15,6 +15,12 @@
         <meta property="og:description" content="{{ post.meta_description }}"/>
         <meta property="og:image" content="{{ post.get_image }}"/>
         <meta property="og:type" content="website"/>
+        <style>
+            img {
+                max-width: 100%;
+                border-radius: 12px;
+            }
+        </style>
         </head>
         <body class="px-2">
         {% include 'web/menu.html' %}
