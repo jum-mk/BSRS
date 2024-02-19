@@ -1,9 +1,9 @@
-from django.db import models
-from django.urls import reverse
-from django.conf import settings
+from decimal import Decimal
+
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
-from decimal import Decimal
+from django.db import models
+from django.urls import reverse
 
 
 class Sections(models.Model):
@@ -217,12 +217,18 @@ class Finding(models.Model):
     longitude = models.DecimalField(max_digits=9, decimal_places=6, default=2)
     locality_name = models.CharField(max_length=255)
     habitat_type = models.CharField(max_length=255)
-    images = models.ImageField(upload_to='findings/')
+    images = models.ImageField(upload_to='findings/', null=True, blank=True)
+    altitude = models.PositiveIntegerField(null=True, blank=True)
+
+    first_name = models.CharField(max_length=255)
+
     additional_field_1 = models.CharField(max_length=255)
     additional_field_2 = models.CharField(max_length=255)
     additional_field_3 = models.CharField(max_length=255)
     additional_field_4 = models.CharField(max_length=255)
     additional_field_5 = models.CharField(max_length=255)
+
+    date_created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return str(self.researcher)
@@ -286,6 +292,11 @@ class BlogPost(models.Model):
     category = models.ForeignKey(BlogCategory, on_delete=models.SET_NULL, null=True, blank=True)
     is_draft = models.BooleanField(default=True)
     date_created = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+
+    wp_id = models.CharField(null=True, blank=True, max_length=20)
+    guid = models.CharField(null=True, blank=True, max_length=300)
+
+    is_archived = models.BooleanField(default=False)
 
     def __str__(self):
         return self.title

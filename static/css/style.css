@@ -60,16 +60,19 @@ nav {
 }
 
 .card-holder {
-    transition: 1s;
-    color: black;
+    color: black!important;
 }
 
 .card-holder:hover {
-    padding: 20px !important;
     cursor: pointer;
 
 }
-
+p.post-card-title{
+    color: black;
+    font-size: 20px;
+    font-weight: 100!important;
+    text-transform: uppercase!important;
+}
 
 .container {
     background-color: #FFFFFF;
@@ -112,3 +115,11 @@ nav {
     padding: 0 !important;
 }
 
+.post-card-holder{
+    min-height: 400px!important;
+}
+.post-card{
+    min-height: 400px!important;
+
+
+}

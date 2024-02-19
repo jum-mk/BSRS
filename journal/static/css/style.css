@@ -1,7 +1,7 @@
 
 body {
     background-color: #00183a12;
-    overflow-x: hidden;
+    overflow-x:hidden;
 }
 
 nav {
@@ -60,16 +60,20 @@ nav {
 }
 
 .card-holder {
-    transition: 1s;
-    color: black;
+    color: black!important;
 }
 
 .card-holder:hover {
-    padding: 20px !important;
     cursor: pointer;
 
 }
-
+p.post-card-title{
+    color: #00492d;
+    font-size: 16px;
+    font-weight: 300!important;
+    text-transform: uppercase!important;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.12);
+}
 
 .container {
     background-color: #FFFFFF;
@@ -109,9 +113,5 @@ nav {
 }
 
 .modal-open {
-    padding: 0 !important;
-}
-
-body {
     padding: 0 !important;
 }

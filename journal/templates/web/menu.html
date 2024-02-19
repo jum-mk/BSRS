@@ -32,7 +32,7 @@
             <li class="nav-item active">
                 <a class="nav-link btn badge-pill" href="{% url 'index' %}">Почетна</a>
             </li>
-            <a class="nav-link btn badge-pill text-dark" href="https://idsbiolozi.com/#sections">Секции</a>
+            <a class="nav-link btn badge-pill text-dark" href="https://idsb.org.mk/#sections">Секции</a>
             <a class="nav-link btn badge-pill text-dark" href="{% url 'all_posts' %}">Сите објави</a>
             <a class="nav-link btn badge-pill text-dark" href="{% url 'journal_index' %}">Публикации</a>
         </ul>
@@ -41,20 +41,20 @@
         <div class="d-flex pt-1 pb-1 mt-2 mb-2 d-flex justify-content-center justify-content-lg-end align-items-center w-100"
              style="border-radius:10px;">
             {% if request.user.is_staff %}
-                <a href="{% url 'dashboard-posts' %}" class="badge btn-outline-light p-2  ms-1 mx-2 shadow-sm text-dark"
-                   type="button" style="cursor: pointer;" data-bs-toggle="modal">Сите постови</a>
-                <a href="{% url 'sign_out' %}" class="badge btn-outline-danger p-2  ms-1 mx-2 shadow-sm text-dark"
-                   type="button">Одјави се</a>
+            <a href="{% url 'dashboard-posts' %}" class="badge btn-outline-light p-2  ms-1 mx-2 shadow-sm text-dark"
+               type="button" style="cursor: pointer;" data-bs-toggle="modal">Сите постови</a>
+            <a href="{% url 'sign_out' %}" class="badge btn-outline-danger p-2  ms-1 mx-2 shadow-sm text-dark"
+               type="button">Одјави се</a>
 
             {% else %}
 
-                <button type="button" class=" btn badge btn-outline-light p-2  ms-1 mx-2 shadow-sm text-dark"
-                        data-toggle="modal" data-target="#staticBackdrop">
-                    Најави
-                    се
-                </button>
+            <button type="button" class=" btn badge btn-outline-light p-2  ms-1 mx-2 shadow-sm text-dark"
+                    data-toggle="modal" data-target="#staticBackdrop">
+                Најави
+                се
+            </button>
 
-                <!-- Modal -->
+            <!-- Modal -->
 
 
             {% endif %}
@@ -84,17 +84,20 @@
                         <label class="form-label" for="email">Username</label>
                         <div class="form-icon-container">
                             <input class="form-control form-icon-input" id="username" type="text" autocomplete="true"
+                                   name="email" id="email"
                                    placeholder="Your username"/>
                         </div>
                     </div>
                     <div class="mb-4 text-start w-100">
                         <label class="form-label" for="password">Password</label>
                         <div class="form-icon-container">
-                            <input class="form-control form-icon-input" id="password" type="password" autocomplete="true"
+                            <input class="form-control form-icon-input" id="password" type="password"
+                                   autocomplete="true"
                                    placeholder="Password"/>
                         </div>
                     </div>
-                    <button class="btn btn-success w-100 mb-3" style="background: #148f5c; font-weight: 700;" id="signInButton">Најави се
+                    <button class="btn btn-success w-100 mb-3" style="background: #148f5c; font-weight: 700;"
+                            id="signInButton">Најави се
                     </button>
 
                 </form>

@@ -93,15 +93,17 @@ def journal_index(request):
 
 
 def index(request):
-    blog_posts = BlogPost.objects.all()[:3]
+    blog_posts = BlogPost.objects.all().filter(is_archived=False)[:3]
     sections = Sections.objects.all()
     return render(request, template_name='index.html', context={'posts': blog_posts, 'sections': sections})
 
 
 def all_posts(request):
-    blog_posts = BlogPost.objects.all()
+    blog_posts = BlogPost.objects.all().filter(is_archived=False)
+    archived_posts = BlogPost.objects.all().filter(is_archived=True)
     sections = Sections.objects.all()
-    return render(request, template_name='web/all_posts.html', context={'posts': blog_posts, 'sections': sections})
+    return render(request, template_name='web/all_posts.html',
+                  context={'posts': blog_posts, 'sections': sections, 'archived_posts': archived_posts})
 
 
 def single_post(request, slug):
@@ -173,17 +175,20 @@ def report(request):
         form = BugForm(request.POST)
         if form.is_valid():
             form.save()
-            subject = 'You have a new bug report'
-            to_email = form.cleaned_data['email']
-            content = form.cleaned_data['name'] + '\n' + form.cleaned_data['email'] + '\n' + form.cleaned_data[
-                'description']
-            send_mail(
-                subject,
-                content,
-                'anovski3@gmail.com',
-                ['anovski3@gmail.com', to_email],
-                fail_silently=False,
-            )
+            try:
+                subject = 'You have a new bug report'
+                to_email = form.cleaned_data['email']
+                content = form.cleaned_data['name'] + '\n' + form.cleaned_data['email'] + '\n' + form.cleaned_data[
+                    'description']
+                send_mail(
+                    subject,
+                    content,
+                    'anovski3@gmail.com',
+                    ['anovski3@gmail.com', to_email],
+                    fail_silently=False,
+                )
+            except:
+                pass
 
             return redirect('thanks')
     else:
@@ -402,10 +407,10 @@ def dashboard_posts(request):
         if request.method == 'POST' and 'delete' in request.POST:
             print(request.POST)
             BlogPost.objects.get(id=int(request.POST['post_id'])).delete()
-            posts = BlogPost.objects.all()
+            posts = BlogPost.objects.all().filter(is_archived=False)
             return render(request, 'web/dashboard/blogs.html', context={'posts': posts})
         else:
-            posts = BlogPost.objects.all()
+            posts = BlogPost.objects.all().filter(is_archived=False)
             return render(request, 'web/dashboard/blogs.html', context={'posts': posts})
 
 
@@ -445,8 +450,6 @@ def parse_xml_file():
 
 
 def delete_post(request):
-    data = json.loads(request.body.decode('utf-8'))
-    Post.objects.all().delete()
     return JsonResponse({'status': 'deleted'})
 
 
@@ -457,7 +460,6 @@ def sign_in(request):
         username = data.get('username')
         password = data.get('password')
         user = authenticate(username=username, password=password)
-        print(data)
         if user is not None:
             login(request, user)
             return Response(status=status.HTTP_200_OK)

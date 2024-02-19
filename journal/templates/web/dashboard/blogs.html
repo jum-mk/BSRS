@@ -2,7 +2,7 @@
 {% load static %}
 <html lang="en">
 <head>
-    <title>Posts | Tong Da Tang</title>
+    <title>Posts | BSRS ADMIN PANEL</title>
     {% include 'head.html' %}
 
 </head>
@@ -47,7 +47,7 @@
                     <td>
                         <div class="d-flex align-items-center" href="#!">
                             <div class="avatar avatar-m">
-                                <img class="rounded" src="{{ post.featured_image.url }}"
+                                <img class="rounded" src="{{ post.get_image }}"
                                      alt="" width="150">
                             </div>
 
