@@ -93,7 +93,7 @@ def journal_index(request):
 
 
 def index(request):
-    blog_posts = BlogPost.objects.all().filter(is_archived=False)[:3]
+    blog_posts = BlogPost.objects.all().filter(is_archived=False).order_by('-id')[:6]
     sections = Sections.objects.all()
     return render(request, template_name='index.html', context={'posts': blog_posts, 'sections': sections})
 
