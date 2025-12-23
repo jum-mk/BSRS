@@ -6,7 +6,7 @@ from django.db.models import Count
 from rest_framework import generics
 from .models import Finding
 from .serializers import FindingSerializer
-
+from collections import OrderedDict
 
 class FindingList(generics.ListCreateAPIView):
     queryset = Finding.objects.all()
@@ -55,7 +55,7 @@ class SectionsViewSet(viewsets.ModelViewSet):
     http_method_names = ['get']
 
 
-class DegreeCount(viewsets.OrderedDict):
+class DegreeCount(OrderedDict):
     qs = Author.objects.order_by('degree').values('degree').annotate(Count('id'))
     permission_classes = [
         permissions.AllowAny

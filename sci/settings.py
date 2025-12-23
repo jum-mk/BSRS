@@ -12,7 +12,7 @@ SECRET_KEY = '*2^-hf$%)08eyj7*1&_q%fs_5j7*1&_q%fs_5j7*1&_q%fs_5b0h&qm0$u)#!f0cy0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [ '127.0.0.1', '34.141.0.143', 'idsb.org.mk', 'www.idsb.org.mk']
+ALLOWED_HOSTS = [ '127.0.0.1', '34.51.225.194', 'idsb.org.mk', 'www.idsb.org.mk']
 
 INTERNAL_IPS = [
     '127.0.0.1',
@@ -29,7 +29,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sitemaps',
     'django_filters',
-    'honeypot',
     'journal',
     'debug_toolbar',
     'rest_framework',
