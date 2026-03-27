@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="mk">
 <head>
     <meta charset="UTF-8">
-    <title>Submit a Manuscript</title>
+    <title>Поднеси ракопис</title>
     {% include 'head.html' %}
 </head>
 <body style="padding: 0 10px;">
@@ -12,43 +12,43 @@
     <form method="post" enctype="multipart/form-data" id="myForm" onsubmit="return validateForm()">
         {% csrf_token %}
         <div class="form-group mb-4">
-            <label>Email</label>
-            <input type="email" name="email" class="form-control mb-3 shadow-sm" placeholder="Enter email"/>
+            <label>Е-пошта</label>
+            <input type="email" name="email" class="form-control mb-3 shadow-sm" placeholder="Внесете е-пошта"/>
         </div>
         <div class="form-group mb-4">
-            <label>Phone</label>
-            <input type="text" name="phone" class="form-control mb-3 shadow-sm" placeholder="Enter phone"/>
+            <label>Телефон</label>
+            <input type="text" name="phone" class="form-control mb-3 shadow-sm" placeholder="Внесете телефон"/>
         </div>
         <div class="form-group mb-4">
-            <label>Main Author Full Name</label>
-            <input type="text" name="main_author" class="form-control mb-3 shadow-sm" placeholder="Enter main author"/>
+            <label>Целосно име на главниот автор</label>
+            <input type="text" name="main_author" class="form-control mb-3 shadow-sm" placeholder="Внесете главен автор"/>
         </div>
         <div class="form-group mb-4">
-            <label>Author Full Address</label>
+            <label>Целосна адреса на авторот</label>
             <input type="text" name="author_full_address" class="form-control mb-3 shadow-sm"
-                   placeholder="Enter author full address"/>
+                   placeholder="Внесете целосна адреса на авторот"/>
         </div>
         <div class="form-group mb-4">
-            <label>Manuscript title</label>
-            <input type="text" name="title" class="form-control mb-3 shadow-sm" placeholder="Enter manuscript title"/>
+            <label>Наслов на ракописот</label>
+            <input type="text" name="title" class="form-control mb-3 shadow-sm" placeholder="Внесете наслов на ракописот"/>
         </div>
         <div class="form-group">
-            <label>Authors list (e.g. Stefan Despotovski, Ana Lijanova, Samir Idrizi...)</label>
-            <input type="text" name="keywords" class="form-control mb-3 shadow-sm" placeholder="Enter keywords"/>
+            <label>Листа на автори (пр. Стефан Деспотовски, Ана Лијанова, Самир Идризи...)</label>
+            <input type="text" name="keywords" class="form-control mb-3 shadow-sm" placeholder="Внесете автори"/>
         </div>
         <div class="form-group mb-4">
-            <label>Add .docx format only (Word)</label><br>
-            <input type="file" name="file" class="shadow-sm" placeholder="Upload file"/>
+            <label>Додадете само .docx формат (Word)</label><br>
+            <input type="file" name="file" class="shadow-sm" placeholder="Прикачи фајл"/>
         </div>
         <div class="form-group">
-            <label>Keywords</label>
-            <input type="text" name="keywords" class="form-control mb-3 shadow-sm" placeholder="Enter keywords"/>
+            <label>Клучни зборови</label>
+            <input type="text" name="keywords" class="form-control mb-3 shadow-sm" placeholder="Внесете клучни зборови"/>
         </div>
 
 
         <div class="d-flex justify-content-end">
-            <button type="submit" class="btn btn-primary shadow-sm" style="border-radius: 10px; ">Submit for
-                review
+            <button type="submit" class="btn btn-primary shadow-sm" style="border-radius: 10px; ">Поднеси за
+                преглед
             </button>
 
         </div>
@@ -73,42 +73,42 @@
 
         // validate email
         if (!email || !email.includes('@')) {
-            errors.push('Please enter a valid email address');
+            errors.push('Внесете валидна е-пошта');
         }
 
         // validate phone
         if (!phone || phone.length < 9) {
-            errors.push('Please enter a valid phone number');
+            errors.push('Внесете валиден телефонски број');
         }
 
         // validate main author
         if (!mainAuthor || mainAuthor.length < 2) {
-            errors.push('Please enter a valid main author name');
+            errors.push('Внесете валидно име на главниот автор');
         }
 
         // validate author address
         if (!authorAddress || authorAddress.length < 10) {
-            errors.push('Please enter a valid author address');
+            errors.push('Внесете валидна адреса на авторот');
         }
 
         // validate title
         if (!title || title.length < 5) {
-            errors.push('Please enter a valid manuscript title');
+            errors.push('Внесете валиден наслов на ракописот');
         }
 
         // validate authors list
         if (!authors || authors.length < 5) {
-            errors.push('Please enter a valid list of authors');
+            errors.push('Внесете валидна листа на автори');
         }
 
         // validate file
         if (!file || !file.endsWith('.docx')) {
-            errors.push('Please upload a file in .docx format');
+            errors.push('Прикачете фајл во .docx формат');
         }
 
         // validate keywords
         if (!keywords || keywords.length < 5) {
-            errors.push('Please enter a valid list of keywords');
+            errors.push('Внесете валидна листа на клучни зборови');
         }
 
         // check if there are any errors

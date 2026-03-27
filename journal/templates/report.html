@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 {% load static %}
-{% load honeypot %}
 <head>
     <meta charset="UTF-8">
     <title>Report</title>
@@ -17,7 +16,6 @@
             </button>
             <form action="" method="post">
                 {% csrf_token %}
-                {% render_honeypot_field "phone" %}
                 {{ form }}
                 <small id="emailHelp" class="form-text text-muted p-1">
                     We'll never share your information with anyone else.

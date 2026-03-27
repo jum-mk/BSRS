@@ -16,16 +16,12 @@
             color: black;
         }
 
-        .aim-text {
-        }
-
-        .aim-title {
-        }
 
         .shimmer {
             color: grey;
             display: inline-block;
             -webkit-mask: linear-gradient(-60deg, #000 30%, rgba(210, 59, 59, 0.33), #940000 70%) right/300% 100%;
+            mask: linear-gradient(-60deg, #000 30%, rgba(210, 59, 59, 0.33), #940000 70%) right/300% 100%;
             background-repeat: no-repeat;
             animation: shimmer 5s;
             font-size: 50px;
@@ -97,7 +93,7 @@
             box-shadow: 0 15px 40px rgba(0,0,0,0.06);
         }
 
-            .blog-img { height: 220px; width: 100%; object-fit: cover; }
+        .blog-img { aspect-ratio: 4 / 5; width: 100%; object-fit: cover; object-position: center top; }
         
         .blog-content { padding: 25px; flex-grow: 1; }
         

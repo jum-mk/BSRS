@@ -438,13 +438,13 @@ import string
 
 def slugify(title):
     # remove any non-alphanumeric or non-space characters
-    title = re.sub('[^0-9a-zA-Z\s]+', '', title)
+    title = re.sub(r'[^0-9a-zA-Z\s]+', '', title)
     # replace any spaces with hyphens
-    title = re.sub('\s+', '-', title)
+    title = re.sub(r'\s+', '-', title)
     # convert to lowercase
     title = title.lower()
     # remove any leading or trailing hyphens
-    title = re.sub('^[-]+|[-]+$', '', title)
+    title = re.sub(r'^[-]+|[-]+$', '', title)
     # add random string
     random_string = ''.join(random.choices(string.ascii_lowercase + string.digits, k=4))
     slug = f"{title}-{random_string}"
