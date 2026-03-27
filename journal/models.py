@@ -302,7 +302,7 @@ class BlogPost(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('single_blog_view', kwargs={
+        return reverse('single_post', kwargs={
             'slug': self.slug
         })
 

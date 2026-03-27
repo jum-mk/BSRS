@@ -107,7 +107,7 @@ def all_posts(request):
 
 
 def single_post(request, slug):
-    post = get_object_or_404(Post, slug=slug)
+    post = get_object_or_404(BlogPost, slug=slug)
     sections = Sections.objects.all()
     return render(request, 'web/single_post.html', context={'post': post, 'sections': sections})
 
@@ -227,22 +227,24 @@ def contact(request):
 
 def submit(request):
     if request.method == 'POST':
-        if request.method == 'POST':
-            email = request.POST['email']
-            phone = request.POST['phone']
-            main_author = request.POST['main_author']
-            author_full_address = request.POST['author_full_address']
-            title = request.POST['title']
-            file = request.FILES['file']
-            keywords = request.POST['keywords']
+        email = request.POST.get('email', '')
+        phone = request.POST.get('phone', '')
+        main_author = request.POST.get('main_author', '')
+        author_full_address = request.POST.get('author_full_address', '')
+        title = request.POST.get('title', '')
+        keywords = request.POST.get('keywords', '')
+        file = request.FILES.get('file')
 
-            manuscript_review = ManuscriptReview(email=email, phone=phone, main_author=main_author,
-                                                 author_full_address=author_full_address, title=title, file=file,
-                                                 keywords=keywords)
+        if file:
+            manuscript_review = ManuscriptReview(
+                email=email, phone=phone, main_author=main_author,
+                author_full_address=author_full_address, title=title, 
+                file=file, keywords=keywords
+            )
             manuscript_review.save()
             return redirect('thanks')
         else:
-            return HttpResponse('Error saving manuscript review')
+            return HttpResponse('Error saving manuscript review', status=400)
 
     return render(request, 'submit.html', context=None)
 
@@ -294,40 +296,35 @@ def create_blog_view(request):
     if request.user.is_authenticated and request.user.is_staff:
         if request.method == 'POST':
             data = request.POST
-            print(data)
-            print('--------' * 100)
 
             post = BlogPost()
-            post.title = data['postTitle']
-            post.meta_description = data['postMeta']
+            post.title = data.get('postTitle', '')
+            post.meta_description = data.get('postMeta', '')
             post.is_draft = False
+            
+            post_url = data.get('postURL', '')
             try:
-                BlogPost.objects.get(slug=data['postURL'])
-                post.slug = data['postURL'] + '-' + get_random_string(5)
+                BlogPost.objects.get(slug=post_url)
+                post.slug = f"{post_url}-{get_random_string(5)}"
             except ObjectDoesNotExist:
-                post.slug = data['postURL']
+                post.slug = post_url
 
-            post.category = BlogCategory.objects.get(id=int(data['category']))
-            post.content = data['html_content']
-            image_data = BytesIO(request.FILES['featured_image'].read())
-            image_name = request.FILES['featured_image'].name.encode('utf-8').decode('utf-8')
-            post.featured_image.save(image_name, image_data)
-            print('test')
-            if post.featured_image is None:
-                print('dead')
-                return JsonResponse(status.HTTP_403_FORBIDDEN)
-            else:
-                post.save()
+            category_id = data.get('category')
+            if category_id:
+                post.category = BlogCategory.objects.get(id=int(category_id))
+            
+            post.content = data.get('html_content', '')
+            
+            if 'featured_image' in request.FILES and request.FILES['featured_image']:
+                post.featured_image = request.FILES['featured_image']
+            
+            post.save()
+            return redirect('dashboard-posts')
 
         cats = BlogCategory.objects.all()
         return render(request, template_name='web/dashboard/create_blog.html', context={'cats': cats})
 
 
-def single_blog_view(request, slug):
-    post = get_object_or_404(BlogPost, slug=slug)
-    return render(request, 'web/single_post.html', context={
-        'post': post,
-    })
 
 
 def edit_single_blog_view(request, id):
@@ -345,17 +342,27 @@ def edit_post(request):
     if request.user.is_staff and request.user.is_authenticated:
         if request.method == 'POST':
             data = request.POST
-            post = get_object_or_404(BlogPost, id=int(data['post_id']))
-            post.title = data['postTitle']
-            post.slug = data['postURL']
-            post.content = data['html_content']
-            post.category = BlogCategory.objects.get(id=data['category'])
-            post.meta_description = data['postMeta']
-            if 'featured_image' in request.FILES and request.FILES['featured_image'] != '':
+            post_id = data.get('post_id')
+            if not post_id:
+                return redirect('dashboard-posts')
+                
+            post = get_object_or_404(BlogPost, id=int(post_id))
+            post.title = data.get('postTitle', '')
+            post.slug = data.get('postURL', '')
+            post.content = data.get('html_content', '')
+            
+            category_id = data.get('category')
+            if category_id:
+                post.category = BlogCategory.objects.get(id=int(category_id))
+                
+            post.meta_description = data.get('postMeta', '')
+            
+            if 'featured_image' in request.FILES and request.FILES['featured_image']:
                 post.featured_image = request.FILES['featured_image']
 
             post.save()
             return redirect('dashboard-posts')
+
 
 
 @csrf_exempt
@@ -389,12 +396,18 @@ def dashboard_cats(request):
     if request.user.is_authenticated and request.user.is_staff:
         if request.method == 'POST' and 'add' in request.POST:
             cat = BlogCategory()
-            cat.name = request.POST['cat_name']
-            cat.save()
+            cat.name = request.POST.get('cat_name', '')
+            if cat.name:
+                cat.save()
             cats = BlogCategory.objects.all()
             return render(request, 'web/dashboard/cats.html', context={'cats': cats})
         elif request.method == 'POST' and 'delete' in request.POST:
-            BlogCategory.objects.get(id=int(request.POST['cat_id'])).delete()
+            cat_id = request.POST.get('cat_id')
+            if cat_id:
+                try:
+                    BlogCategory.objects.get(id=int(cat_id)).delete()
+                except (ValueError, BlogCategory.DoesNotExist):
+                    pass
             cats = BlogCategory.objects.all()
             return render(request, 'web/dashboard/cats.html', context={'cats': cats})
         else:
@@ -405,8 +418,12 @@ def dashboard_cats(request):
 def dashboard_posts(request):
     if request.user.is_authenticated and request.user.is_staff:
         if request.method == 'POST' and 'delete' in request.POST:
-            print(request.POST)
-            BlogPost.objects.get(id=int(request.POST['post_id'])).delete()
+            post_id = request.POST.get('post_id')
+            if post_id:
+                try:
+                    BlogPost.objects.get(id=int(post_id)).delete()
+                except (ValueError, BlogPost.DoesNotExist):
+                    pass
             posts = BlogPost.objects.all().filter(is_archived=False)
             return render(request, 'web/dashboard/blogs.html', context={'posts': posts})
         else:

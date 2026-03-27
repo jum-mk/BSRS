@@ -1,5 +1,8 @@
 {% load static %}
 <style>
+    .container {
+        max-width: 1300px;
+    }
     .nav-link {
         font-size: 14px;
     }
@@ -12,7 +15,8 @@
         color: black;
     }
 </style>
-<nav class="navbar navbar-expand-lg navbar-light container d-flex justify-content-between w-100 shadow-sm"
+
+<nav class=" mb-3 navbar navbar-expand-lg navbar-light container d-flex justify-content-between w-100 shadow-sm"
      style="background-color:#FFFFFF;">
     <a class="navbar-brand" href="{% url 'index' %}">
         <img src="{% static 'img/logo.png' %}" width="35" height="35" class=" ms-2 ms-md-0" alt="">
@@ -26,24 +30,23 @@
                style="width: 30px; height: 30px; "></i>
         </span>
     </button>
-    <div class="collapse navbar-collapse w-100" id="navbarSupportedContent" align="center">
+    <div class="collapse navbar-collapse w-100" id="navbarSupportedContent" >
         <ul class="navbar-nav mr-auto w-100">
             <li class="nav-item active">
-                <a class="nav-link btn badge-pill" href="{% url 'index' %}">Home</a>
+                <a class="nav-link btn badge-pill" href="{% url 'index' %}">Почетна</a>
             </li>
-            <a class="nav-link btn badge-pill text-dark" href="{% url 'advanced_search' %}">Search</a>
-            <a class="nav-link btn badge-pill text-dark" href="{% url 'submit' %}">Submit an article for review</a>
-
+            <a class="nav-link btn badge-pill text-dark" href="{% url 'advanced_search' %}">Пребарување</a>
+            <a class="nav-link btn badge-pill text-dark" href="{% url 'submit' %}">Поднеси научен труд</a>
         </ul>
         <hr>
 
         <div class="d-flex pt-1 pb-1 mt-2 mb-2 d-flex justify-content-center justify-content-lg-end align-items-center w-100"
              style="border-radius:10px;">
             <a class="badge  btn-outline-light p-2  ms-1 mx-2 shadow-sm text-dark"
-               href="{% url 'contact' %}">Contact</a>
+               href="{% url 'contact' %}">Контакт</a>
             <a class="badge  btn-outline-success p-2 mx-2 mx-md-1 shadow-sm"
                href="https://journal.anovin.mk/api/">API</a>
-            <a class="badge  btn-outline-danger p-2 mx-2 shadow-sm" href="{% url 'report' %}">Report an issue</a>
+            <a class="badge  btn-outline-danger p-2 mx-2 shadow-sm" href="{% url 'report' %}">Пријави проблем</a>
         </div>
         <hr>
     </div>

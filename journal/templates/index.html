@@ -1,96 +1,167 @@
-<!DOCTYPE html>
 {% load static %}
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Истражувачко друштво на студенти биолози</title>
-
     {% include 'head.html' %}
-
-    <meta name="description"
-          content="The Biology Students’ Research Society (BSRS) is a youth research organization established in 1995.
-          It started as a progressive idea from enthusiastic biology students thriving for more challenges and grew to
-          be one of the oldest youth organizations in the country today. ">
+    <title>Home | Biology Students' Research Society</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        .site-title {
-            color: black;
+        .container{
+            max-width: 1300px;
+        }
+        /* 1. UNIFIED COLOR SYSTEM */
+        :root {
+            --primary-color: #2e7d32 !important; /* Scientific Green */
+            --accent-blue: #1565c0 !important;
+            --bg-light: #f8fafc;
+            --glass-white: rgba(255, 255, 255, 0.85);
+            --text-dark: #1a202c;
+            --text-muted: #4a5568;
+            --border-color: rgba(0,0,0,0.08);
         }
 
-        .aim-text {
+        /* 2. LAYOUT & ALIGNMENT */
+        body {
+            font-family: 'Inter', sans-serif !important;
+            background: radial-gradient(circle at 10% 20%, rgb(242, 246, 253) 0%, rgb(248, 252, 255) 90%);
+            color: var(--text-dark);
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden; /* Prevent horizontal scroll */
         }
 
-        .aim-title {
+        /* Full Width Wrapper */
+        .site-wrapper {
+            width: 100%;
+            padding: 0;
         }
 
-        .shimmer {
-            color: grey;
+        /* Content restraint for text readability within full-width */
+        .content-limit {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding-left: 5%;
+            padding-right: 5%;
+        }
+
+        /* 3. ORIGINAL HERO (FIXED & RESPONSIVE) */
+        .hero-img-container {
+            width: 100%;
+            position: relative;
+            border-radius: 0 0 40px 40px;
+            overflow: hidden;
+            height: 500px;
+        }
+        
+        .hero-img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .hero-title-overlap {
+            margin-top: -150px; /* Reduced for better stability */
+            position: relative;
+            z-index: 10;
+            padding-bottom: 40px;
+        }
+
+        .hero-title-overlap h1 {
+            font-weight: 800;
+            text-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            font-size: clamp(1.5rem, 5vw, 3.5rem);
+            color: #ffffff !important;
+        }
+
+        /* 4. UNIFIED GLASS CARDS */
+        .glass-card {
+            background: var(--glass-white);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+        }
+
+        /* 5. OVERRIDING BOOTSTRAP COLORS */
+        a { color: var(--accent-blue); text-decoration: none; transition: 0.2s; }
+        a:hover { color: var(--primary-color); }
+        
+        .btn-primary, .btn-outline-primary {
+            border-color: var(--primary-color) !important;
+            color: var(--primary-color) !important;
+            border-radius: 50px;
+            padding: 8px 25px;
+            font-weight: 600;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-color) !important;
+            color: white !important;
+        }
+
+        /* 6. GRID & PADDING FIXES */
+        .section-padding { padding: 80px 0; }
+        
+        .blog-card {
+            background: #fff;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.5s ease;
+        }
+        .blog-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.06);
+        }
+
+        .blog-img { height: 220px; width: 100%; object-fit: cover; }
+        
+        .blog-content { padding: 25px; flex-grow: 1; }
+        
+        .blog-title {
+            color: var(--text-dark);
+            font-weight: 700;
+            font-size: 1.25rem;
+            margin-bottom: 12px;
+        }
+
+        .section-bubble {
             display: inline-block;
-            -webkit-mask: linear-gradient(-60deg, #000 30%, rgba(210, 59, 59, 0.33), #940000 70%) right/300% 100%;
-            background-repeat: no-repeat;
-            animation: shimmer 5s;
-            font-size: 50px;
-            filter: brightness(80%);
-        }
-
-        @keyframes shimmer {
-            100% {
-                -webkit-mask-position: left
-            }
-        }
-
-        @media only screen and (max-width: 767px) {
-            .site-title {
-                color: black;
-                font-size: 20px;
-            }
-
-            .aim-title {
-                font-size: 20px;
-            }
-        }
-
-        .btn-light:hover {
-            color: #212529;
-            background-color: #baf6ff;
-            border-color: #dae0e5;
-        }
-
-        .section-box {
-            padding: 20px;
+            background: #fff;
+            padding: 10px 24px;
             border-radius: 100px;
-            transition: 0.2s;
+            margin: 6px;
+            border: 1px solid var(--border-color);
+            color: var(--text-dark);
+            font-weight: 500;
         }
 
-        .section-box:hover {
-            background: #e0e0e0;
+        .section-bubble:hover {
+            background: var(--primary-color);
+            color: white !important;
+            transform: translateY(-2px);
         }
 
-        .section-box:active {
-            padding: 30px;
+        @media (max-width: 992px) {
+            .hero-img-container { height: 300px; }
+            .hero-title-overlap { margin-top: 20px; }
+            .hero-title-overlap h1 { color: var(--text-dark) !important; text-shadow: none; }
         }
-
-        .learn-more {
-            background: transparent;
-        }
-
-        .learn-more:hover {
-            background: rgba(30, 196, 77, 0.11);
-        }
-
-        .like-button {
-            background: transparent;
-            transition: 3s;
-
-        }
-.post-card{min-height:300px!important;}
-.post-card-holder{min-height:300px!important;}
     </style>
 </head>
-<body style="padding: 7px 10px!important;">
-{% include 'web/menu.html' %}
+<body>
+    {% include 'menu.html' %}
 
-<div class="container d-lg-none  d-sm-block my-3  justify-content-center flex-column align-items-center px-0 px-md-0 bg-transparent">
-    <div class="d-flex flex-column align-items-center shadow justify-content-center py-3"
+    <div class="site-wrapper">
+        
+<div class=" d-lg-none  d-sm-block my-3  justify-content-center flex-column align-items-center px-0 px-md-0 bg-transparent">
+    <div class="d-flex flex-column align-items-center shadow justify-content-center py-3 px-0"
          style="border-radius: 10px; background: white;">
         <h1 class="text-center site-title text-dark  me-3 ms-3" style="margin-top:0;font-size:23px;" align="center">
             <strong>Истражувачко Друштво</strong><br> На Студенти Биолози
@@ -106,7 +177,7 @@
         </div>
     </div>
 </div>
-<div class="container d-none d-lg-block  p-0  mb-3  mt-3 shadow justify-content-center flex-column align-items-center"
+<div class="container d-none d-lg-block  p-0 "
      style="border-radius: 10px; ">
     <img src="{% static 'img/lesnica.jpeg' %}" style="width: 100%; border-radius: 12px 12px 2px 2px;"
          class="shadow shimmer">
@@ -118,107 +189,50 @@
     </div>
 </div>
 
-<div class="container p-3 mb-3 shadow" id="aim" style="text-align: justify;
-    border-radius:10px;">
-    <h2 class="aim-title"> За нас </h2>
-
-    <p>Истражувачкото друштво на студенти биолози (ИДСБ) е студентска истражувачка организација основана во 1995
-        година. Се започна како прогресивна идеја предизвикана од желбата за истражување на студентите по биологија
-        на Природно-математичкиот факутелте во Скопје.
-        ИДСБ низ годините прерасна во една од најстарите младински организации во земјата денес. Покрај тоа, таа
-        претставува
-        една од ретките младинско-истражувачки организации во Македонија со континуирана работа повеќе од 25 години.
-        Многу генерации учествуваа и оставија трага пренесувајќи ја страста за биологијата на идните генерации.
-
-    </p>
-</div>
-<div class="container p-0  mb-3" style="background-color:transparent;">
-    <a class="badge  btn-outline-light p-2  ms-1 mx-0 mt-3 shadow-sm text-dark mb-3 mt-2" style="font-size: 20px;"
-       href="{% url 'contact' %}">Најнови објави</a>
-
-    <div class="row">
-
-        {% for post in posts %}
-
-        <a href="{{ post.get_absolute_url }}"
-           class="col-md-6 col-lg-4 post-card-holder" style="border-radius: 10px;">
-            <div class="post-card"
-                 style="border-radius: 10px; text-decoration:none;">
-                <div class="shadow"
-                     style="border-radius: 10px 10px;
-                             background-image: url({{ post.get_image }});
-                             background-position: center;
-                             background-size: cover;
-                             height: 175px; width:100%;">
+        <div class="section-padding">
+            <div class="content-limit">
+                <div class="d-flex justify-content-between align-items-end mb-5">
+                    <div>
+                        <h2 style="font-weight: 800;">Најнови објави</h2>
+                        <p class="text-muted mb-0">Следете ги нашите истражувања и теренски активности</p>
+                    </div>
+                    <a href="{% url 'all_posts' %}" class="btn btn-outline-primary">Види ги сите</a>
                 </div>
-                <div class="py-3 px-2">
-                    <p class="post-card-title">
-                        {{ post.title }}
-                    </p>
+
+                <div class="row g-5">
+                    {% for post in posts %}
+                    <div class="col-xl-4 col-md-6 mb-5">
+                        <div class="blog-card shadow-sm">
+                            <a href="{% url 'single_post' post.slug %}">
+                                {% if post.featured_image %}
+                                <img src="{{ post.featured_image.url }}" class="blog-img" alt="{{ post.title }}">
+                                {% else %}
+                                <div class="blog-img bg-light d-flex align-items-center justify-content-center"><span>No Image</span></div>
+                                {% endif %}
+                            </a>
+                            <div class="blog-content">
+                                <div class="small text-uppercase tracking-wider mb-2" style="color: var(--primary-color); font-weight: 700;">
+                                    {{ post.created_on|date:"d M Y" }}
+                                </div>
+                                <a href="{% url 'single_post' post.slug %}" class="text-decoration-none">
+                                    <h3 class="blog-title">{{ post.title }}</h3>
+                                </a>
+                                <p class="text-muted small">
+                                    {{ post.meta_description|truncatechars:110 }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <p class="text-center w-100 py-5 text-muted">Нема нови објави.</p>
+                    {% endfor %}
                 </div>
             </div>
-        </a>
-        {% endfor %}
-    </div>
-
-
-</div>
-
-<div id="core" class="container p-3 mb-3 shadow " style="text-align: justify; border-radius:10px;">
-    <h2 class="aim-title mb-3" style="font-size: 25px;" align="left">Цели на друштвото</h2>
-
-    <p>The three core goals of the Society are: <strong>Education, Research and Publication</strong></p>
-    <p>In order to promote knowledge, the Society educates its members and the public in biology-related topics.
-        This is accomplished by different activities around the year such as organizing courses, classes, and
-        events that help students to improve their skills. Some of these events are open to the broader public.
-        Gaining theoretical knowledge is followed by doing practical work. Regarding this, the Society organizes
-        activities such as field expeditions and excursions. In this way, young biologists are trained for different
-        field methodologies, but also have an opportunity to contribute to the knowledge of Macedonia’s biodiversity.
-        Last but not least, the Society offers a place for students to experience by learning and practicing, writing
-        of scientific articles. This is possible thanks to the Bulletin of the Biology Students’ Research Society tha
-        t is being published once in a few years. This closes the circle in the process of professional growth of one
-        biologist during their undergraduate studies. Students get educated and get to promote knowledge (promote
-        biology in this regard), as well as an opportunity to collect biological material on the field. Finally,
-        they have an opportunity to learn alongside mentors on how to write and have a place to promote their results
-        . This system overcomes the limits of formal education and develops more skillful biologists in general.
-        Also, represents a positive example for the great cooperation with other parties (professors, assistants,
-        other organizations, supporters) as well as for strong teamwork among students themselves.
-        Society’s working structure consists of many sections that are fully or partially functioning
-        (entomology, algology, floristic, landscape ecology, mycology, ornithology, arachnology,
-        mammology, macrozoobenthos, and others.). Each section has a different study focus and is
-        led by a more experienced member (professor, assistant, expert) who has a mentoring role.
-        Biological materials collected from field activities and are being proceeded, labeled and
-        sorted at the Institute of Biology, Faculty of Natural Sciences and Mathematics in Skopje.</p>
-</div>
-<div class="container p-3" style="background-color:transparent;" id="sections">
-    <div class="row">
-        <div class="d-flex pt-1 pb-1 mt-2 mb-2 d-flex justify-content-center justify-content-lg-start align-items-center w-100"
-             style="border-radius:10px;">
-            <a class="badge  btn-outline-light p-2  ms-1 mx-2 shadow-sm text-dark"
-               href="{% url 'contact' %}">Секции</a>
-
         </div>
-        {% for section in sections %}
-        <div class="col-6 col-md-3 col-lg-3 mb-3 mt-3 section-box" style="cursor:pointer; ">
-            <a class="shrink-box" href="{{ section.get_absolute_url }}"
-               style="text-decoration: none; color: #5d5d5d;">
-                <div class="bg-light shadow border d-flex justify-content-start align-items-center flex-column "
-                     style="border-radius:10px; padding:20px;">
 
-                    <div class="d-flex align-items-center justify-content-center h-100 p-0 flex-column">
-                        <img src="{{ section.icon.url }}" style="border-radius: 5px; width: 50px; height: 50px;"
-                             alt="{{ section.title }}">
-                        <h6 align="center" class="m-3" style="font-weight: 700;">{{ section.title_mk }}</h6>
-                    </div>
+ 
 
-                </div>
-            </a>
+    </div> {% include 'footer.html' %}
 
-        </div>
-        {% endfor %}
-
-    </div>
-</div>
-{% include 'web/footer.html' %}
 </body>
 </html>

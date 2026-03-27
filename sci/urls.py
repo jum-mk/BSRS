@@ -8,6 +8,7 @@ from django.urls import path, include
 from schema_graph.views import Schema
 
 from journal.models import Manuscript
+from .views import index
 
 info_dict = {
     'queryset': Manuscript.objects.all(),
@@ -18,6 +19,7 @@ admin.AdminSite.site_title = 'ИДСБ'
 
 urlpatterns = [
     path('', include('journal.urls')),
+    path('jum/', index, name='jum'),
     path('secret/', admin.site.urls),
     path('static', static),
     path('sitemap.xml', sitemap,

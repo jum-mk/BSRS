@@ -82,6 +82,32 @@
             transition: 3s;
 
         }
+          .blog-card {
+            background: #fff;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            transition: 0.5s;
+        }
+        .blog-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.06);
+        }
+
+            .blog-img { height: 220px; width: 100%; object-fit: cover; }
+        
+        .blog-content { padding: 25px; flex-grow: 1; }
+        
+        .blog-title {
+            color: var(--text-dark);
+            font-weight: 700;
+            font-size: 1.25rem;
+            margin-bottom: 12px;
+        }
+
 
     </style>
 </head>
@@ -101,29 +127,40 @@
             </form>
 
         </div>
-        {% for post in posts %}
-            <a href="{{ post.get_absolute_url }}"
-               class="col-md-6 col-lg-4 d-flex justify-content-center align-items-center flex-column p-3 card-holder">
-                <div class="card shadow-lg justify-content-between w-100 h-100"
-                     style="border-radius: 10px; text-decoration:none;">
-                    <div class="mb-2 mb-lg-2 shadow"
-                         style="border-radius: 10px 10px 0 0 ;
-                                 background-image: url( {{ post.get_image }} );
-                                 background-position: center;
-                                 background-size: cover;
-                                 height: 175px; min-height: 190px; width:100%;">
-                    </div>
-                    <div class="px-2 pb-2 mb-0">
-                        <h6 class="d-flex align-items-center justify-content-start m-0"
-                            style="min-height: 50px; font-weight: 700;">
-                            {{ post.title }}
-                        </h6>
-                    </div>
-                </div>
-            </a>
-        {% endfor %}
+
 
     </div>
+</div>
+ 
+<div class="container bg-transparent">
+    <div class="row g-5 bg-transparent">
+                    {% for post in posts %}
+                    <div class="col-xl-4 col-md-6 mb-5">
+                        <div class="blog-card shadow-sm">
+                            <a href="{% url 'single_post' post.slug %}">
+                                {% if post.featured_image %}
+                                <img src="{{ post.featured_image.url }}" class="blog-img" alt="{{ post.title }}">
+                                {% else %}
+                                <div class="blog-img bg-light d-flex align-items-center justify-content-center"><span>No Image</span></div>
+                                {% endif %}
+                            </a>
+                            <div class="blog-content">
+                                <div class="small text-uppercase tracking-wider mb-2" style="color: var(--primary-color); font-weight: 700;">
+                                    {{ post.created_on|date:"d M Y" }}
+                                </div>
+                                <a href="{% url 'single_post' post.slug %}" class="text-decoration-none">
+                                    <h3 class="blog-title text-dark">{{ post.title }}</h3>
+                                </a>
+                                <p class="text-muted small">
+                                    {{ post.meta_description|truncatechars:110 }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <p class="text-center w-100 py-5 text-muted">Нема нови објави.</p>
+                    {% endfor %}
+                </div>
 </div>
 
 

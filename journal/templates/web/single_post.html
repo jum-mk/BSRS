@@ -9,11 +9,11 @@
         <meta name="description" content="{{ post.meta_description }}">
         <meta charset="UTF-8">
         <meta name=”robots” content="index, follow">
-        <meta property="og:site_name" content="https://www.idsbiolozi.com"/>
+        <meta property="og:site_name" content="{{ request.scheme }}://{{ request.get_host }}"/>
         <meta property="og:title" content="{{ post.title }}"/>
-        <meta property="og:url" content="https://idsbiolozi.com{{ post.get_absolute_url }}"/>
+        <meta property="og:url" content="{{ request.scheme }}://{{ request.get_host }}{{ post.get_absolute_url }}"/>
         <meta property="og:description" content="{{ post.meta_description }}"/>
-        <meta property="og:image" content="{{ post.get_image }}"/>
+        <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{{ post.get_image }}"/>
         <meta property="og:type" content="website"/>
         <style>
             #contentHolder img {
@@ -73,11 +73,12 @@
                     </p>
                 </div>
                 <div class="col p-0 m-0">
-                    {% for tag in post.tag.all %}
+                    {% if post.category %}
                         <div class="badge badge-light float-sm-right shadow-sm px-2 border py-2 d-md-block d-none"
                              style="font-size:11px; font-weight: 300;">
-                            <button class="btn btn-light">{{ tag }}</button>
-                        </div> {% endfor %}
+                            <button class="btn btn-light">{{ post.category }}</button>
+                        </div> 
+                    {% endif %}
                 </div>
 
             </div>
@@ -94,14 +95,14 @@
     </script>
     <script>
         const shareButton = document.getElementById('shareButton')
-        const post_url = `{{ post.get_absolute_url }}`
+        const post_url = `{{ request.scheme }}://{{ request.get_host }}{{ post.get_absolute_url }}`
         shareButton.addEventListener('click', event => {
             event.preventDefault();
             console.log(event)
             if (navigator.share) {
                 navigator.share({
                     title: `{{ post.title }}`,
-                    url: `{{ post.get_absolute_url }}`
+                    url: `{{ request.scheme }}://{{ request.get_host }}{{ post.get_absolute_url }}`
                 }).then(() => {
                     console.log('Thanks for sharing!');
                 })

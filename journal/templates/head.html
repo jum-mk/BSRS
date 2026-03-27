@@ -17,5 +17,41 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
+<style>
+    :root {
+    --primary-nature: #1b5e20; /* Deep Biological Green */
+    --accent-glow: #00c853;
+    --text-main: #2c3e50;
+    --glass-bg: rgba(255, 255, 255, 0.8);
+    --glass-border: rgba(255, 255, 255, 0.5);
+    --shadow-soft: 0 8px 32px 0 rgba(31, 38, 135, 0.05);
+}
 
+body {
+    background: radial-gradient(circle at 10% 20%, #fdfbfb 0%, #ebedee 100%);
+    color: var(--text-main);
+    overflow-x: hidden;
+}
+
+/* Unified Spacing System */
+.section-spacer {
+    padding: 60px 0;
+}
+
+.content-width {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 0 25px;
+}
+
+/* Glass Effect */
+.glass-panel {
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    box-shadow: var(--shadow-soft);
+}
+</style>
 <!-- BASE SCRIPTS END -->

@@ -26,7 +26,6 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('all_posts/', views.all_posts, name='all_posts'),
     path('sign-in/', views.sign_in, name='sign-in'),
-    path('all_posts/', views.all_posts, name='forgot-password'),
 
     path('post/<slug>/', views.single_post, name='single_post'),
     path('findings/', views.create_finding, name='findings'),
@@ -58,7 +57,6 @@ urlpatterns = [
     path('dashboard-posts/', views.dashboard_posts, name='dashboard-posts'),
     path('dashboard-cats/', views.dashboard_cats, name='dashboard-cats'),
     path('create_blog_view/', views.create_blog_view, name='create_blog_view'),
-    path('posts/<str:slug>/', views.single_blog_view, name='single_blog_view'),
 
     path('edit_post/<int:id>/', views.edit_single_blog_view, name='edit_single_blog_view'),
     path('edit_post/', views.edit_post, name='edit_post'),
